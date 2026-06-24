@@ -1,0 +1,43 @@
+#wrapper #sidebar-wrapper,
+#wrapper .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh !important;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* Pastikan content tidak tertimpa sidebar */
+#content-wrapper {
+    margin-left: 224px; /* sesuaikan dengan lebar sidebar */
+}
+
+body.sidebar-toggled #content-wrapper {
+    margin-left: 6.5rem;
+}
+
+.topbar {
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    left: 220px;
+    z-index: 998;
+}
+
+/* Beri jarak atas pada content agar tidak tertimpa navbar */
+#content .container-fluid {
+    margin-top: 70px;
+}
+
+/* Saat sidebar di-toggle/collapse */
+body.sidebar-toggled .topbar {
+    left: 6.5rem;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+    .topbar {
+        left: 0 !important;
+    }
+}
