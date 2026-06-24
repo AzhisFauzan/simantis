@@ -64,7 +64,7 @@ sistemInventaris/
 Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal:
 
 **1. Clone Repository**
-git clone [https://github.com/AzhisFauzan/sistemInventaris.git](https://github.com/AzhisFauzan/sistemInventaris.git)
+git clone [https://github.com/AzhisFauzan/sistemInventaris.git](https://github.com/AzhisFauzan/simantis.git)
 cd sistemInventaris
 
 **2. Install Dependencies**
