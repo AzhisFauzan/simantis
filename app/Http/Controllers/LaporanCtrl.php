@@ -72,38 +72,6 @@ class LaporanCtrl extends Controller
         return $pdf->stream('laporan-inventaris-' . now()->format('Ymd') . '.pdf');
     }
 
-    public function inventarisExcel(Request $request)
-    {
-        $data_perangkat = DB::table('perangkat as a')
-            ->join('kategori_perangkat as b', 'a.id_kategori', '=', 'b.id_kategori')
-            ->join('ruangan as c', 'a.id_ruangan', '=', 'c.id_ruangan')
-            ->select('a.*', 'b.nama_kategori', 'c.nama_ruangan')
-            ->orderBy('a.id_perangkat');
-
-        if ($request->filled('id_ruangan')) {
-            $data_perangkat->whereIn('a.id_ruangan', (array) $request->id_ruangan);
-        }
-
-        $perangkat = $data_perangkat->get();
-
-        $ruanganDipilih = $request->filled('id_ruangan') ? (array) $request->id_ruangan : [null];
-        foreach ($ruanganDipilih as $idRuangan) {
-            DB::table('riwayat_cetak')->insert([
-                'id_ruangan'   => $idRuangan ?: null,
-                'jenis'        => 'excel',
-                'dicetak_pada' => now(),
-            ]);
-        }
-
-        $namaFile = 'laporan-inventaris-' . now()->format('Ymd') . '.xls';
-        $html     = view('laporan.inventaris_excel', compact('perangkat'))->render();
-
-        return response($html, 200, [
-            'Content-Type'        => 'application/vnd.ms-excel',
-            'Content-Disposition' => "attachment; filename=\"$namaFile\"",
-        ]);
-    }
-
     public function maintenance(Request $request)
     {
         $ruangans = DB::table('ruangan')->orderBy('nama_ruangan')->get();
@@ -172,7 +140,7 @@ class LaporanCtrl extends Controller
 
             $hasPengaduan = $group->whereNotNull('id_pengaduan_masuk')->count() > 0;
             $hasManual = $group->whereNull('id_pengaduan_masuk')->count() > 0;
-            
+
             if ($hasPengaduan && $hasManual) {
                 $sumber_html = '<span class="badge badge-dark">Campuran</span>';
             } elseif ($hasPengaduan) {
@@ -268,7 +236,7 @@ class LaporanCtrl extends Controller
 
             $hasPengaduan = $group->whereNotNull('id_pengaduan_masuk')->count() > 0;
             $hasManual = $group->whereNull('id_pengaduan_masuk')->count() > 0;
-            
+
             if ($hasPengaduan && $hasManual) {
                 $sumber_html = '<span class="badge badge-dark" style="background-color: #343a40; color: white; padding: 3px 6px; border-radius: 4px;">Campuran</span>';
             } elseif ($hasPengaduan) {

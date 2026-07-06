@@ -252,7 +252,7 @@
         <li class="nav-item {{ request()->is('maintenance/maintenance*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/maintenance/maintenance') }}">
                 <i class="fas fa-fw fa-calendar-alt"></i>
-                <span>Maintenance</span>
+                <span>Tindakan Maintenance</span>
             </a>
         </li>
 
@@ -298,7 +298,7 @@
         <li class="nav-item {{ request()->is('maintenance/maintenance*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/maintenance/maintenance') }}">
                 <i class="fas fa-fw fa-calendar-alt"></i>
-                <span>Jadwal Maintenance</span>
+                <span>Tindakan Maintenance</span>
             </a>
         </li>
 

@@ -344,9 +344,6 @@
                 <button onclick="bukaLaporan('{{ route('laporan.inventaris.print') }}')" class="btn-rs-danger">
                     <i class="fas fa-file-pdf"></i> Cetak PDF
                 </button>
-                <button onclick="bukaLaporan('{{ route('laporan.inventaris.excel') }}')" class="btn-rs-green">
-                    <i class="fas fa-file-excel"></i> Export Excel
-                </button>
             </div>
         </div>
 

@@ -13,7 +13,7 @@
         <li class="nav-item mx-2" style="display: flex; align-items: center;">
             <a class="nav-link py-1" href="#" id="alertsDropdownBtn" style="position: relative; display: flex; align-items: center;">
                 <i class="fas fa-bell fa-lg" style="color: gray;"></i>
-                <span id="notifBadge" class="badge badge-danger" style="display:none;position:absolute;top:4px;right:-6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;padding:0;">
+                <span id="notifBadge" class="badge badge-danger" style="position:absolute;top:4px;right:-6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;padding:0;">
                     0
                 </span>
             </a>
@@ -90,6 +90,7 @@
     let lastUnreadCount = 0;
     let isMutating = false;
     let selectedPengaduanId = null;
+     const isDashboard = window.location.pathname === '/dashboard';
 
     $(document).on('click', '.notif-link', function(e) {
         e.preventDefault();
@@ -169,7 +170,7 @@
         .then(data => {
             console.log('DATA NOTIF:', data);
 
-            if (data.unread > lastUnreadCount) {
+            if (isDashboard && data.unread > lastUnreadCount) {
                 document.getElementById('notifSound').play().catch(() => {});
             }
 
@@ -180,7 +181,7 @@
             let badge = document.getElementById('notifBadge');
             let countSpan = document.getElementById('notifCount');
 
-            if (unreadCountState > 0) {
+            if (isDashboard && unreadCountState > 0) {
                 badge.style.display = 'flex';
                 badge.innerText = unreadCountState;
             } else {
@@ -287,6 +288,10 @@
         $('#logoutModal').modal('show');
     });
 
-    fetchNotifikasi();
-    setInterval(fetchNotifikasi, 5000);
+    if (isDashboard) {
+        fetchNotifikasi();
+        setInterval(fetchNotifikasi, 5000);
+    } else {
+        document.getElementById('notifBadge').style.display = 'none';
+    }
 </script>
