@@ -21,7 +21,7 @@
         --border:    #e2e8f0;
         --text-main: #0f172a;
         --text-sub:  #64748b;
-        --radius:    10px;
+        --radius:    8px;
     }
 
     * { box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
@@ -35,7 +35,7 @@
         padding: 4px 0;
     }
     .page-title {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text-main);
         letter-spacing: -0.3px;
@@ -50,8 +50,8 @@
         color: #fff;
         border: none;
         border-radius: var(--radius);
-        padding: 10px 18px;
-        font-size: 13px;
+        padding: 6px 12px;
+        font-size: 11.5px;
         font-weight: 600;
         cursor: pointer;
         text-decoration: none;
@@ -68,7 +68,7 @@
         margin-bottom: 24px;
     }
     .stat-card {
-        border-radius: 12px;
+        border-radius: 8px;
         padding: 16px 18px;
         position: relative;
         overflow: hidden;
@@ -102,7 +102,7 @@
         background: rgba(255,255,255,.1);
     }
     .stat-label {
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 600;
         opacity: .9;
         text-transform: uppercase;
@@ -132,7 +132,7 @@
     .table-card {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 14px;
+        border-radius: 8px;
         overflow: hidden;
         margin-bottom: 100px;
         box-shadow: 0 1px 8px rgba(0,0,0,.04);
@@ -146,11 +146,11 @@
     }
     #userTable thead th {
         color: #fff;
-        font-size: 0.78rem;
+        font-size: 0.7rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        padding: 14px 14px;
+        padding: 10px 10px;
         border: none;
         white-space: nowrap;
         text-align: left; /* Kembalikan default rata kiri */
@@ -165,9 +165,9 @@
     #userTable tbody tr:last-child { border-bottom: none; }
     #userTable tbody tr:hover { background: var(--slate); }
     #userTable tbody td {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         color: var(--text-main);
-        padding: 12px 14px;
+        padding: 8px 10px;
         border: none;
         vertical-align: middle;
         text-align: left; /* Kembalikan default rata kiri */
@@ -178,19 +178,19 @@
     /* ── Avatar User Cell ── */
     .user-cell { display: flex; align-items: center; gap: 11px; text-align: left; }
     .avatar {
-        width: 38px;
-        height: 38px;
+        width: 30px;
+        height: 30px;
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 14px;
+        font-size: 10.5px;
         flex-shrink: 0;
     }
     .avatar-admin   { background: var(--rs-purple); color: #fff; }
     .avatar-teknisi { background: var(--rs-green); color: #fff; }
 
-    .user-name { font-weight: 600; font-size: 13px; color: var(--text-main); }
+    .user-name { font-weight: 600; font-size: 11.5px; color: var(--text-main); }
 
     /* ── Badge ── */
     .badge {
@@ -200,7 +200,7 @@
         gap: 5px;
         padding: 4px 11px;
         border-radius: 20px;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 600;
     }
     .badge-admin   { background: var(--rs-purple-soft); color: var(--rs-purple); }
@@ -223,7 +223,7 @@
         background: transparent;
         cursor: pointer;
         transition: all 0.15s;
-        font-size: 13px;
+        font-size: 11.5px;
     }
     .action-btn.edit { color: #d97706; }
     .action-btn.edit:hover { background: #fef3c7; border-color: #fde68a; }
@@ -231,7 +231,7 @@
     .action-btn.delete:hover { background: #fef2f2; border-color: #fecaca; }
 
     /* ── Modal ── */
-    .modal-content { border-radius: 14px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,.12); }
+    .modal-content { border-radius: 8px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,.12); }
 
     /* Header modal solid */
     .modal-header-custom {
@@ -257,7 +257,7 @@
 
     .form-label-custom {
         display: block;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 700;
         color: var(--text-sub);
         margin-bottom: 6px;
@@ -269,7 +269,7 @@
         padding: 9px 12px;
         border: 1.5px solid var(--border);
         border-radius: 9px;
-        font-size: 13px;
+        font-size: 11.5px;
         color: var(--text-main);
         background: #fff;
         outline: none;
@@ -290,7 +290,7 @@
 
     .btn-cancel {
         padding: 9px 16px;
-        font-size: 13px;
+        font-size: 11.5px;
         border: 1px solid var(--border);
         border-radius: 9px;
         background: transparent;
@@ -303,7 +303,7 @@
 
     .btn-save-modal {
         padding: 9px 20px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 700;
         border: none;
         border-radius: 9px;
@@ -318,7 +318,7 @@
     /* Tombol update modal solid (Oranye) */
     .btn-update-modal {
         padding: 9px 20px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 700;
         border: none;
         border-radius: 9px;
@@ -336,7 +336,7 @@
         border: 1px solid #fca5a5;
         border-radius: 9px;
         padding: 10px 13px;
-        font-size: 12px;
+        font-size: 10.5px;
         margin-bottom: 16px;
         font-weight: 500;
     }
@@ -357,6 +357,16 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    /* Animasi Pop Spin untuk Icon Modal Success */
+    @keyframes pop-spin {
+        0% { transform: scale(0.5) rotate(-90deg); opacity: 0; }
+        60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .animate-pop-spin {
+        animation: pop-spin 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 </style>
 
@@ -542,7 +552,83 @@
     </div>
 </div>
 
+{{-- Modal Success (Centang / Hapus) --}}
+<div class="modal fade" id="modalSuccess" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div id="successIconContainer" style="width: 64px; height: 64px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i id="successIcon" class="fas fa-check" style="font-size: 32px; color: #16a34a;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Berhasil!</h5>
+                <p id="successMsg" style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Data berhasil disimpan.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Konfirmasi Hapus --}}
+<div class="modal fade" id="modalDeleteUser" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div style="width: 64px; height: 64px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-trash" style="font-size: 28px; color: #dc2626;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Hapus User?</h5>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Data yang dihapus tidak bisa dikembalikan.</p>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn-cancel" data-dismiss="modal" style="flex: 1;">Batal</button>
+                    <button type="button" id="confirmDeleteBtn" style="flex: 1; padding: 9px 16px; font-size: 11.5px; font-weight: 700; border: none; border-radius: 9px; background: #dc2626; color: #fff; cursor: pointer; transition: background .15s; box-shadow: 0 4px 10px rgba(220, 38, 38, .3);">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+function showSuccessModal(message, type = 'success') {
+    $('#successMsg').text(message);
+    
+    // Konfigurasi icon dan warna berdasarkan tipe
+    let iconContainer = $('#successIconContainer');
+    let icon = $('#successIcon');
+    
+    // Reset animasi agar bisa dimainkan ulang
+    iconContainer.removeClass('animate-pop-spin');
+    void iconContainer[0].offsetWidth; // trigger reflow
+    iconContainer.addClass('animate-pop-spin');
+
+    if(type === 'danger') {
+        iconContainer.css('background', '#fee2e2'); // Merah muda
+        icon.attr('class', 'fas fa-trash').css('color', '#dc2626'); // Ikon hapus merah
+    } else {
+        iconContainer.css('background', '#dcfce7'); // Hijau muda
+        icon.attr('class', 'fas fa-check').css('color', '#16a34a'); // Ikon centang hijau
+    }
+
+    // Bersihkan semua modal yang sedang terbuka secara paksa (menghindari bug backdrop hitam tertumpuk)
+    $('.modal').modal('hide');
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+
+    // Tampilkan modal success dengan timeout sangat kecil agar UI update dulu
+    setTimeout(function() {
+        $('#modalSuccess').modal('show');
+        
+        // Auto-close setelah 1.5 detik
+        setTimeout(function() {
+            $('#modalSuccess').modal('hide');
+        }, 1500);
+    }, 100);
+}
+
+// Failsafe pembersih backdrop kalau modal success selesai tertutup
+$('#modalSuccess').on('hidden.bs.modal', function () {
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+});
+
 function updateStats() {
     var rows = $('#userTable tbody tr');
     var total = rows.length;
@@ -620,7 +706,7 @@ $(document).ready(function(){
                     $('#formUser')[0].reset();
                     $('#modalUser').modal('hide');
                     updateStats();
-                    alert('Data berhasil disimpan');
+                    showSuccessModal('User baru berhasil ditambahkan');
                 }
             },
             error: function(xhr){
@@ -694,7 +780,7 @@ $(document).ready(function(){
 
                     $('#modalEditUser').modal('hide');
                     updateStats();
-                    alert('Data berhasil diupdate');
+                    showSuccessModal('Data user berhasil diupdate');
                 }
             },
             error: function(xhr){
@@ -713,23 +799,30 @@ $(document).ready(function(){
     });
 
     // ===================== HAPUS USER =====================
+    let userIdToDelete = null;
+
     $(document).on('click', '.btn-delete', function(e){
         e.preventDefault();
-        var id = $(this).data('id');
+        userIdToDelete = $(this).data('id');
+        $('#modalDeleteUser').modal('show');
+    });
 
-        if(!confirm('Yakin ingin menghapus user ini?')){ return; }
+    $('#confirmDeleteBtn').click(function(){
+        if(!userIdToDelete) return;
 
         $.ajax({
-            url: "{{ url('/user/data_user') }}/" + id + "/delete",
+            url: "{{ url('/user/data_user') }}/" + userIdToDelete + "/delete",
             type: "GET",
             success: function(response){
                 if(response.status == 'success'){
-                    $('#row-' + id).remove();
+                    $('#modalDeleteUser').modal('hide');
+                    $('#row-' + userIdToDelete).remove();
                     $('#userTable tbody tr').each(function(index){
                         $(this).find('td:first').text(index + 1);
                     });
                     updateStats();
-                    alert('Data berhasil dihapus');
+                    showSuccessModal('Data berhasil dihapus', 'danger');
+                    userIdToDelete = null;
                 }
             },
             error: function(){

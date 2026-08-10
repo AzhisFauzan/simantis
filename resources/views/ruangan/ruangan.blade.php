@@ -29,12 +29,11 @@
 
     .search-field {
         width: 100%;
-        height: 42px;
-        /* Padding FIXED & SIMETRIS */
+        height: 36px;
         padding: 0 50px 0 45px !important;
         border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        font-size: 13.5px;
+        border-radius: 8px;
+        font-size: 12px;
         font-family: 'Inter', sans-serif;
         background: #fff;
         color: #1e293b;
@@ -132,12 +131,12 @@
     .room-card {
         background: #fff;
         border: 1px solid #e8edf3;
-        border-radius: 12px;
-        padding: 14px 16px;
-        margin-bottom: 10px;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 8px;
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
         transition: box-shadow 0.18s, border-color 0.18s, transform 0.15s;
         cursor: pointer;
     }
@@ -149,9 +148,9 @@
     }
 
     .room-card-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
         background: var(--rs-purple-soft);
         display: flex;
         align-items: center;
@@ -160,12 +159,12 @@
     }
 
     .room-card-icon i {
-        font-size: 16px;
+        font-size: 14px;
         color: var(--rs-purple);
     }
 
     .room-card-name {
-        font-size: 13.5px;
+        font-size: 12px;
         font-weight: 600;
         color: #1e293b;
         line-height: 1.3;

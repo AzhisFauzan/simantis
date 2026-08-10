@@ -11,47 +11,47 @@
         }
 
         body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 11px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 10px;
             margin: 0;
-            color: #000;
+            color: #1e293b;
             line-height: 1.4;
         }
 
         /* --- KOP SURAT --- */
-        .kop-rsu { margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0px; text-transform: uppercase; }
-        .kop-surat { width: 100%; margin-bottom: 5px; border-collapse: collapse; }
+        .kop-rsu { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #0f172a; text-transform: uppercase; }
+        .kop-surat { width: 100%; margin-bottom: 8px; border-collapse: collapse; }
         .kop-surat td { vertical-align: middle; border: none; padding: 0; }
-        .td-logo { width: 20%; text-align: center; }
-        .td-teks { width: 80%; text-align: center; }
-        .logo { width: 100px; }
+        .td-logo { width: 18%; text-align: center; }
+        .td-teks { width: 82%; text-align: center; }
+        .logo { width: 90px; }
 
-        .kop-darmayu { margin: 0; font-family: 'Cooper Black', 'Georgia', serif; font-size: 38px; font-weight: bold; color: #16a34a; }
-        .kop-madiun { margin: 0 0 5px 0; font-size: 14px; font-weight: bold; letter-spacing: 6px; text-transform: uppercase; }
-        .kop-alamat { margin: 0; font-size: 12px; }
+        .kop-darmayu { margin: -2px 0 2px 0; font-family: 'Georgia', serif; font-size: 32px; font-weight: bold; color: #16a34a; }
+        .kop-madiun { margin: 0 0 6px 0; font-size: 10px; font-weight: bold; letter-spacing: 5px; color: #475569; text-transform: uppercase; }
+        .kop-alamat { margin: 0; font-size: 10px; color: #334155; }
         .link-email { color: #2563eb; text-decoration: none; }
 
-        .garis-kop { border-top: 3px solid #000; border-bottom: 1px solid #000; height: 2px; width: 100%; margin-bottom: 20px; }
+        .garis-kop { border-top: 2.5px solid #0f172a; border-bottom: 1px solid #0f172a; height: 2px; width: 100%; margin-bottom: 24px; }
 
         /* --- JUDUL LAPORAN --- */
         .judul-laporan { text-align: center; margin-bottom: 20px; }
-        .judul-laporan h3 { margin: 0; font-size: 14px; text-decoration: underline; }
-        .judul-laporan p { margin: 2px 0 0 0; font-weight: bold; font-size: 12px; }
+        .judul-laporan h3 { margin: 0; font-size: 12px; font-weight: 800; text-decoration: underline; color: #0f172a; }
+        .judul-laporan p { margin: 4px 0 0 0; font-weight: 600; font-size: 10px; color: #475569; }
 
         /* --- INFO CETAK & RINGKASAN --- */
-        .info-cetak { margin-bottom: 15px; font-size: 11px; width: 100%; border-collapse: collapse; }
+        .info-cetak { margin-bottom: 15px; font-size: 10px; width: 100%; border-collapse: collapse; color: #334155; }
         .info-cetak td { border: none; padding: 3px 0; }
 
         /* --- TABEL DATA --- */
         .tabel-data { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .tabel-data th, .tabel-data td { border: 1px solid #16a34a; padding: 6px 5px; vertical-align: top; word-wrap: break-word; }
-        .tabel-data th { background-color: #16a34a; color: #ffffff; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 10px; }
-        .tabel-data tr:nth-child(even) { background-color: #f0fdf4; }
+        .tabel-data th, .tabel-data td { border: 1px solid #cbd5e1; padding: 8px 6px; vertical-align: middle; word-wrap: break-word; }
+        .tabel-data th { background-color: #16a34a; color: #ffffff; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 9px; letter-spacing: 0.5px; }
+        .tabel-data tr:nth-child(even) { background-color: #f8fafc; }
         .tabel-data tr:nth-child(odd) { background-color: #ffffff; }
 
         /* --- TANDA TANGAN --- */
-        .tabel-ttd { width: 100%; margin-top: 30px; text-align: center; page-break-inside: avoid; }
-        .tabel-ttd td { border: none; width: 33.33%; padding: 0; vertical-align: top; }
+        .tabel-ttd { width: 100%; margin-top: 40px; text-align: center; page-break-inside: avoid; }
+        .tabel-ttd td { border: none; width: 33.33%; padding: 0; vertical-align: top; font-size: 10px; color: #1e293b; }
         .spasi-ttd { height: 70px; }
     </style>
 </head>

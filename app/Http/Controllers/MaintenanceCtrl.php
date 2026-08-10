@@ -13,7 +13,10 @@ class MaintenanceCtrl extends Controller
         $maintenances = DB::table('maintenance as a')
         ->leftJoin('kategori_perangkat as b', 'a.id_kategori', '=', 'b.id_kategori')
         ->leftJoin('ruangan as c', 'a.id_ruangan', '=', 'c.id_ruangan')
-        ->leftJoin('pengaduan_masuk as d', 'a.id_pengaduan_masuk', '=', 'd.id_pengaduan_masuk')
+        ->leftJoin('pengaduan_masuk as d', function($join) {
+            $join->on('a.id_pengaduan_masuk', '=', 'd.id_pengaduan_masuk')
+                 ->on('a.id_kategori', '=', 'd.id_kategori');
+        })
         ->select(
             'a.*',
             'b.nama_kategori',
@@ -50,7 +53,10 @@ class MaintenanceCtrl extends Controller
         $maintenances = DB::table('maintenance as m')
             ->leftJoin('ruangan as r', 'r.id_ruangan', '=', 'm.id_ruangan')
             ->leftJoin('kategori_perangkat as k', 'k.id_kategori', '=', 'm.id_kategori')
-            ->leftJoin('pengaduan_masuk as pm', 'pm.id_pengaduan_masuk', '=', 'm.id_pengaduan_masuk')
+            ->leftJoin('pengaduan_masuk as pm', function($join) {
+                $join->on('pm.id_pengaduan_masuk', '=', 'm.id_pengaduan_masuk')
+                     ->on('pm.id_kategori', '=', 'm.id_kategori');
+            })
             ->where('m.id_ruangan', $reference->id_ruangan)
             ->whereDate('m.tanggal', \Carbon\Carbon::parse($reference->tanggal)->format('Y-m-d'))
             ->select(
@@ -72,32 +78,16 @@ class MaintenanceCtrl extends Controller
         $teknisi = $maintenances
             ->pluck('nama_teknisi')
             ->filter()
+            ->map(fn($t) => strtoupper($t))
             ->unique()
             ->implode(', ');
 
         $deskripsi = $maintenances
+        ->unique(function ($item) {
+            return $item->id_kategori . '_' . $item->deskripsi;
+        })
         ->map(function ($item) {
-
-            $status = strtolower($item->status_pengaduan ?? '');
-
-            if ($status == 'selesai') {
-                $isi = $item->deskripsi ?? '-';
-
-            } elseif ($status == 'diproses') {
-                $isi = $item->deskripsi ?? '-';
-
-            } elseif ($status == 'menunggu') {
-                $isi = $item->deskripsi ?? '-';
-            } elseif ($status == 'diterima') {
-                $isi = $item->deskripsi ?? '-';
-
-            } elseif ($status == 'pending' || $status == 'dipending') {
-                $isi = $item->deskripsi ?? '-';
-
-            } else {
-                $isi = $item->deskripsi ?? '-';
-            }
-
+            $isi = $item->deskripsi ?? '-';
             return '• <b>'.$item->nama_kategori.'</b> : '.$isi;
         })
         ->implode('<br>');
@@ -131,7 +121,7 @@ class MaintenanceCtrl extends Controller
         }
 
         if (empty($statusBadgesHtml)) {
-            $statusBadgesHtml = '<span class="badge badge-primary"><i class="fas fa-calendar-check"></i> Jadwal Maintenance</span>';
+            $statusBadgesHtml = '<span class="badge badge-success"><i class="fas fa-check-circle"></i> Maintenance Selesai</span>';
         }
 
         return response()->json([
@@ -180,7 +170,7 @@ class MaintenanceCtrl extends Controller
                 'id_kategori'  => $id_kategori,
                 'id_ruangan'   => $request->id_ruangan,
                 'tanggal'      => $tanggal,
-                'nama_teknisi' => $request->nama_teknisi,
+                'nama_teknisi' => strtoupper(Auth::user()->name ?? $request->nama_teknisi),
                 'deskripsi'    => $request->deskripsi,
             ]);
         }
@@ -209,7 +199,10 @@ class MaintenanceCtrl extends Controller
         $maintenances = DB::table('maintenance as a')
             ->join('ruangan as c', 'a.id_ruangan', '=', 'c.id_ruangan')
             ->join('kategori_perangkat as k', 'a.id_kategori', '=', 'k.id_kategori')
-            ->leftJoin('pengaduan_masuk as pm', 'a.id_pengaduan_masuk', '=', 'pm.id_pengaduan_masuk')
+            ->leftJoin('pengaduan_masuk as pm', function($join) {
+                $join->on('a.id_pengaduan_masuk', '=', 'pm.id_pengaduan_masuk')
+                     ->on('a.id_kategori', '=', 'pm.id_kategori');
+            })
             ->where(function ($query) {
                 $query->where('pm.status', '=', 'Selesai')->orWhereNull('a.id_pengaduan_masuk');
             })
@@ -278,7 +271,10 @@ class MaintenanceCtrl extends Controller
         $maintenances = DB::table('maintenance as m')
             ->leftJoin('ruangan as r', 'r.id_ruangan', '=', 'm.id_ruangan')
             ->leftJoin('kategori_perangkat as k', 'k.id_kategori', '=', 'm.id_kategori')
-            ->leftJoin('pengaduan_masuk as pm', 'pm.id_pengaduan_masuk', '=', 'm.id_pengaduan_masuk')
+            ->leftJoin('pengaduan_masuk as pm', function($join) {
+                $join->on('pm.id_pengaduan_masuk', '=', 'm.id_pengaduan_masuk')
+                     ->on('pm.id_kategori', '=', 'm.id_kategori');
+            })
             ->where('m.id_ruangan', $reference->id_ruangan)
             ->whereDate('m.tanggal', \Carbon\Carbon::parse($reference->tanggal)->format('Y-m-d'))
             ->where(function ($query) {
@@ -296,12 +292,14 @@ class MaintenanceCtrl extends Controller
         $first = $maintenances->first();
         $teknisi = $maintenances->pluck('nama_teknisi')->unique()->filter()->implode(', ');
 
-        $deskripsi = $maintenances->map(function ($item) {
+        $deskripsi = $maintenances->unique(function ($item) {
+            return $item->id_kategori . '_' . $item->deskripsi;
+        })->map(function ($item) {
             $sumberText = $item->id_pengaduan_masuk
                 ? ' <span class="badge badge-info" style="font-size:10px; padding:1px 4px;">Pengaduan</span>'
                 : ' <span class="badge badge-secondary" style="font-size:10px; padding:1px 4px;">Manual</span>';
 
-            $isiTeks = $item->id_pengaduan_masuk ? ($item->deskripsi_pengaduan ?? '-') : ($item->deskripsi ?? '-');
+            $isiTeks = $item->deskripsi ?? '-';
             return '• <b>'.$item->nama_kategori.'</b>'.$sumberText.' : '.$isiTeks;
         })->implode('<br>');
 

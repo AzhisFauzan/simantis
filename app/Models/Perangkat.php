@@ -18,12 +18,16 @@ class Perangkat extends Model
     // Kolom yang boleh diisi (mass assignment)
     protected $fillable = [
         'kode_inventaris',
-        'nama_perangkat',
+        'alamat_ip',
         'id_kategori',
-        'merk',
+        'merek',
         'spesifikasi',
         'id_ruangan',
-        'kondisi'
+        'kondisi',
+        'tipe',
+        'dipindahkan_oleh',
+        'role_pemindah',
+        'tanggal_pindah',
     ];
 
     // Relasi ke tabel Kategori Perangkat

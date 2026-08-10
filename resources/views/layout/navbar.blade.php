@@ -13,7 +13,7 @@
         <li class="nav-item mx-2" style="display: flex; align-items: center;">
             <a class="nav-link py-1" href="#" id="alertsDropdownBtn" style="position: relative; display: flex; align-items: center;">
                 <i class="fas fa-bell fa-lg" style="color: gray;"></i>
-                <span id="notifBadge" class="badge badge-danger" style="position:absolute;top:4px;right:-6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;padding:0;">
+                <span id="notifBadge" class="badge badge-danger" style="position:absolute;top:15px;right:5px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;padding:0;">
                     0
                 </span>
             </a>
@@ -48,10 +48,10 @@
     <source src="{{ asset('/audio/notif.mp3') }}" type="audio/mpeg">
 </audio>
 
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+{{-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header py-2"><h6>terima Logout</h6></div>
+            <div class="modal-header py-2"><h6>Logout</h6></div>
             <div class="modal-body py-2">Apakah Anda yakin ingin logout?</div>
             <div class="modal-footer py-2">
                 <button class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
@@ -59,7 +59,37 @@
             </div>
         </div>
     </div>
+</div> --}}
+
+
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-body p-4 text-center">
+                <div class="text-danger mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                    </svg>
+                </div>
+
+                <h5 class="fw-bold mb-2" id="logoutModalLabel">Siap untuk keluar?</h5>
+                <p class="text-muted mb-4" style="font-size: 0.9rem;">Sesi Anda saat ini akan diakhiri. Anda harus login kembali untuk masuk.</p>
+
+                <div class="d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-light px-4 rounded-pill fw-medium" data-dismiss="modal">Batal</button>
+                    <form method="POST" action="{{ url('/logout') }}" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-danger px-4 rounded-pill fw-medium shadow-sm">Ya, Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
 
 <div class="modal fade" id="modalTerimaNotif" tabindex="-1">
     <div class="modal-dialog">
@@ -288,10 +318,6 @@
         $('#logoutModal').modal('show');
     });
 
-    if (isDashboard) {
-        fetchNotifikasi();
-        setInterval(fetchNotifikasi, 5000);
-    } else {
-        document.getElementById('notifBadge').style.display = 'none';
-    }
+    fetchNotifikasi();
+    setInterval(fetchNotifikasi, 5000);
 </script>

@@ -20,7 +20,7 @@
         --border:    #e2e8f0;
         --text-main: #0f172a;
         --text-sub:  #64748b;
-        --radius:    10px;
+        --radius:    8px;
     }
 
     .page-wrapper { font-family: 'DM Sans', sans-serif; }
@@ -62,7 +62,7 @@
         border: none;
         border-radius: var(--radius);
         padding: 8px 18px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         font-family: 'DM Sans', sans-serif;
         cursor: pointer;
@@ -77,7 +77,7 @@
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: 6px 14px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 500;
         transition: all 0.2s;
     }
@@ -105,7 +105,7 @@
     .table-card {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 14px;
+        border-radius: 8px;
         overflow: hidden;
     }
     .table-card .card-body { padding: 0; }
@@ -116,11 +116,11 @@
     }
     #perangkatTable thead th {
         color: #fff;
-        font-size: 0.78rem;
+        font-size: 0.7rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        padding: 14px 14px;
+        padding: 10px 10px;
         border: none;
         white-space: nowrap;
     }
@@ -131,9 +131,9 @@
     #perangkatTable tbody tr:last-child { border-bottom: none; }
     #perangkatTable tbody tr:hover { background: var(--slate); }
     #perangkatTable tbody td {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         color: var(--text-main);
-        padding: 12px 14px;
+        padding: 8px 10px;
         border: none;
         vertical-align: middle;
     }
@@ -163,7 +163,7 @@
         background: transparent;
         cursor: pointer;
         transition: background 0.13s, border-color 0.13s;
-        font-size: 13px;
+        font-size: 11.5px;
         margin-right: 3px;
     }
     .action-btn.view   { color: var(--rs-purple); }
@@ -178,7 +178,7 @@
     /* ── Modal base ── */
     .modal-content {
         border: none;
-        border-radius: 14px;
+        border-radius: 8px;
         overflow: hidden;
         font-family: 'DM Sans', sans-serif;
     }
@@ -188,15 +188,15 @@
     /* ── Modal Headers ── */
     .modal-header-add, .modal-header-move {
         background: var(--rs-purple);
-        padding: 16px 20px;
+        padding: 12px 16px;
     }
     .modal-header-edit {
         background: #f59e0b;
-        padding: 16px 20px;
+        padding: 12px 16px;
     }
     .modal-header-delete {
         background: #dc2626;
-        padding: 16px 20px;
+        padding: 12px 16px;
     }
     .modal-header-add .modal-title, .modal-header-move .modal-title,
     .modal-header-edit .modal-title, .modal-header-delete .modal-title,
@@ -207,7 +207,7 @@
 
     /* modal form */
     .modal-body label {
-        font-size: 0.78rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: var(--text-sub);
         text-transform: uppercase;
@@ -254,12 +254,12 @@
     }
     .detail-row:last-child { border-bottom: none; }
     .detail-key {
-        font-size: 0.78rem;
+        font-size: 0.7rem;
         color: var(--text-sub);
         min-width: 120px;
     }
     .detail-val {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         color: var(--text-main);
         text-align: right;
@@ -313,7 +313,7 @@
         border: none;
         border-radius: var(--radius);
         padding: 8px 20px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         font-family: 'DM Sans', sans-serif;
         cursor: pointer;
@@ -327,7 +327,7 @@
         border: none;
         border-radius: var(--radius);
         padding: 8px 20px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         cursor: pointer;
     }
@@ -338,7 +338,7 @@
         border: none;
         border-radius: var(--radius);
         padding: 8px 20px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         cursor: pointer;
     }
@@ -349,11 +349,20 @@
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: 8px 18px;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 500;
         cursor: pointer;
     }
     .btn-secondary-custom:hover { background: #e2e8f0; }
+    /* Animasi Pop Spin untuk Icon Modal Success */
+    @keyframes pop-spin {
+        0% { transform: scale(0.5) rotate(-90deg); opacity: 0; }
+        60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .animate-pop-spin {
+        animation: pop-spin 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
 </style>
 
 <div class="page-wrapper">
@@ -748,28 +757,38 @@
     </div>
 </div>
 
-{{-- ─────────────── MODAL HAPUS ─────────────── --}}
-<div class="modal fade" id="modalHapusperangkat" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header modal-header-delete">
-                <h5 class="modal-title"><i class="fas fa-trash mr-2"></i>Hapus Perangkat</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body text-center" style="padding: 24px 20px;">
-                <div style="width:52px; height:52px; border-radius:50%; background:#fee2e2; display:flex; align-items:center; justify-content:center; margin: 0 auto 14px;">
-                    <i class="fas fa-exclamation-triangle text-danger" style="font-size:1.3rem;"></i>
+{{-- Modal Success (Centang / Hapus) --}}
+<div class="modal fade" id="modalSuccess" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div id="successIconContainer" style="width: 64px; height: 64px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i id="successIcon" class="fas fa-check" style="font-size: 32px; color: #16a34a;"></i>
                 </div>
-                <p style="font-size:0.9rem; color:var(--text-main); margin:0;">
-                    Yakin ingin menghapus perangkat <strong id="hapus_kategori_perangkat"></strong>?
-                </p>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Berhasil!</h5>
+                <p id="successMsg" style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Data berhasil disimpan.</p>
             </div>
-            <div class="modal-footer justify-content-center" style="gap:8px;">
-                <button type="button" class="btn-secondary-custom" data-dismiss="modal">Batal</button>
-                <form id="formHapus" method="POST">
-                    @csrf
-                    <button type="submit" class="btn-danger-custom">Ya, Hapus</button>
-                </form>
+        </div>
+    </div>
+</div>
+
+{{-- ─────────────── MODAL HAPUS ─────────────── --}}
+<div class="modal fade" id="modalHapusperangkat" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div style="width: 64px; height: 64px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-trash" style="font-size: 28px; color: #dc2626;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Hapus Perangkat?</h5>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Data <strong id="hapus_kategori_perangkat"></strong> yang dihapus tidak bisa dikembalikan.</p>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn-cancel" data-dismiss="modal" style="flex: 1; border:none; background:#f1f5f9; padding: 9px 16px; font-size: 11.5px; font-weight: 700; border-radius: 9px; cursor: pointer; color: #475569;">Batal</button>
+                    <form id="formHapus" method="POST" style="margin:0; flex:1;">
+                        @csrf
+                        <button type="submit" style="width:100%; padding: 9px 16px; font-size: 11.5px; font-weight: 700; border: none; border-radius: 9px; background: #dc2626; color: #fff; cursor: pointer; transition: background .15s; box-shadow: 0 4px 10px rgba(220, 38, 38, .3);">Hapus</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -777,6 +796,49 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <script>
+    function showSuccessModal(message, type = 'success') {
+        $('#successMsg').text(message);
+        
+        let iconContainer = $('#successIconContainer');
+        let icon = $('#successIcon');
+        
+        iconContainer.removeClass('animate-pop-spin');
+        void iconContainer[0].offsetWidth; 
+        iconContainer.addClass('animate-pop-spin');
+
+        if(type === 'danger') {
+            iconContainer.css('background', '#fee2e2'); 
+            icon.attr('class', 'fas fa-trash').css('color', '#dc2626'); 
+        } else {
+            iconContainer.css('background', '#dcfce7'); 
+            icon.attr('class', 'fas fa-check').css('color', '#16a34a'); 
+        }
+
+        $('.modal').modal('hide');
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+
+        setTimeout(function() {
+            $('#modalSuccess').modal('show');
+            setTimeout(function() {
+                $('#modalSuccess').modal('hide');
+            }, 1500);
+        }, 100);
+    }
+
+    $('#modalSuccess').on('hidden.bs.modal', function () {
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+    });
+
+    @if(session('success'))
+        $(document).ready(function() {
+            let msg = "{{ session('success') }}";
+            let type = msg.toLowerCase().includes('dihapus') ? 'danger' : 'success';
+            showSuccessModal(msg, type);
+        });
+    @endif
+
     const baseUrl = "{{ url('') }}";
 
     let teksLabelQRCode = "";

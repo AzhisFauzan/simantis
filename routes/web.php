@@ -11,7 +11,7 @@ Route::post('/login/check', [AuthCtrl::class, 'proses_login'])->name('login.chec
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/logout', [AuthCtrl::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthCtrl::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardCtrl::class, 'dashboard']);
 
     Route::middleware(['role:admin'])->group(function () {
@@ -27,26 +27,18 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/kategori/store', [KategoriCtrl::class, 'store_kategori']);
         Route::get('/kategori/{id}/delete', [KategoriCtrl::class, 'delete_kategori']);
 
-        # Perangkat IT
-        Route::get('/perangkat/data_perangkat/{id}', [PerangkatCtrl::class, 'data_perangkat']);
-        Route::post('perangkat/data_perangkat/{id_perangkat}/move', [PerangkatCtrl::class, 'move']);
-        Route::post('/perangkat/data_perangkat', [PerangkatCtrl::class, 'store_perangkat']);
-        Route::post('/perangkat/data_perangkat/{id}/update', [PerangkatCtrl::class, 'update_perangkat']);
-        Route::post('/perangkat/data_perangkat/{id}/delete', [PerangkatCtrl::class, 'delete_perangkat']);
+
 
         # Laporan
         Route::prefix('laporan')->group(function () {
             Route::get('/inventaris', [LaporanCtrl::class, 'inventaris'])->name('laporan.inventaris');
             Route::get('/inventaris/print', [LaporanCtrl::class, 'inventarisPrint'])->name('laporan.inventaris.print');
-            Route::get('/inventaris/excel', [LaporanCtrl::class, 'inventarisExcel'])->name('laporan.inventaris.excel');
+
             Route::get('/maintenance', [LaporanCtrl::class, 'maintenance'])->name('laporan.maintenance');
             Route::get('/maintenance/print', [LaporanCtrl::class, 'printMaintenance'])->name('laporan.maintenance.print');
         });
 
-        Route::get('/notifikasi/get', [NotifikasiCtrl::class, 'get']);
-        Route::post('/notifikasi/read', [NotifikasiCtrl::class, 'read']);
-        Route::post('/notifikasi/hapus', [NotifikasiCtrl::class, 'hapus']);
-        Route::post('/notifikasi/bersihkan', [NotifikasiCtrl::class, 'bersihkan']);
+
     });
 
     # Ruangan

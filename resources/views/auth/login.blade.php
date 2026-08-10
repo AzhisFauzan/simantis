@@ -96,7 +96,7 @@
             height: 90px;
             object-fit: contain;
             background: var(--white);
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 4px;
             box-shadow: 0 6px 20px rgba(107,33,168,.18);
         }
@@ -262,7 +262,7 @@
             color: #b91c1c;
             padding: 12px;
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             margin-bottom: 20px;
             border-left: 4px solid #ef4444;
             animation: fadeUp .6s ease forwards;

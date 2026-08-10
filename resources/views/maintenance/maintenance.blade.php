@@ -29,26 +29,26 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 10px;
     }
     .page-title {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text-main);
         letter-spacing: -0.3px;
         margin: 0;
     }
     .page-subtitle {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 500;
         color: var(--text-sub);
-        margin-top: 3px;
+        margin-top: 2px;
     }
     .btn-row {
         display: flex;
-        gap: 8px;
+        gap: 6px;
         align-items: center;
         flex-wrap: wrap;
     }
@@ -57,13 +57,13 @@
     .btn-solid {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         background: var(--rs-green);
         color: #fff;
         border: none;
-        border-radius: 8px;
-        padding: 8px 14px;
-        font-size: 12px;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 11px;
         font-weight: 700;
         cursor: pointer;
         text-decoration: none;
@@ -76,13 +76,13 @@
     .btn-outline-sm {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         background: #fff;
         color: var(--text-main);
         border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 8px 14px;
-        font-size: 12px;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 11px;
         font-weight: 600;
         cursor: pointer;
         text-decoration: none !important; /* Menghilangkan garis bawah */
@@ -98,13 +98,13 @@
     .btn-danger-sm {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         background: #fff;
         color: #dc2626;
         border: 1px solid #fca5a5;
-        border-radius: 8px;
-        padding: 8px 14px;
-        font-size: 12px;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 11px;
         font-weight: 600;
         cursor: pointer;
         text-decoration: none !important;
@@ -116,8 +116,8 @@
         background: #fef2f2;
         color: #dc2626;
         border-radius: 20px;
-        padding: 2px 6px;
-        font-size: 11px;
+        padding: 2px 5px;
+        font-size: 10px;
         font-weight: 700;
         border: 1px solid #fecaca;
     }
@@ -126,14 +126,14 @@
     .toolbar-card {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 12px 16px;
-        margin-bottom: 14px;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 12px;
     }
     .toolbar-row {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         flex-wrap: wrap;
     }
     .toolbar-label {
@@ -145,10 +145,10 @@
         white-space: nowrap;
     }
     .date-input {
-        padding: 6px 10px;
+        padding: 4px 8px;
         border: 1px solid var(--border);
-        border-radius: 6px;
-        font-size: 12px;
+        border-radius: 4px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--text-main);
         background: var(--slate);
@@ -157,14 +157,14 @@
         transition: border-color .15s;
     }
     .date-input:focus { border-color: var(--rs-purple); background: #fff; }
-    .date-sep { font-size: 12px; font-weight: 600; color: var(--text-sub); }
-    .divider-v { width: 1px; height: 24px; background: var(--border); }
+    .date-sep { font-size: 11px; font-weight: 600; color: var(--text-sub); }
+    .divider-v { width: 1px; height: 20px; background: var(--border); }
 
-    .quick-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .quick-pills { display: flex; gap: 4px; flex-wrap: wrap; }
     .quick-pill {
-        padding: 5px 12px;
+        padding: 4px 10px;
         border-radius: 20px;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
         border: 1px solid var(--border);
         background: transparent;
@@ -177,11 +177,11 @@
 
     .btn-reset {
         margin-left: auto;
-        padding: 6px 12px;
-        font-size: 11px;
+        padding: 4px 10px;
+        font-size: 10px;
         font-weight: 600;
         border: 1px solid var(--border);
-        border-radius: 6px;
+        border-radius: 4px;
         background: transparent;
         color: var(--text-main);
         cursor: pointer;
@@ -193,47 +193,48 @@
     .filter-dropdown-wrap {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-bottom: 16px;
+        gap: 10px;
+        margin-bottom: 12px;
     }
     .select-kategori {
-        padding: 8px 12px;
+        padding: 6px 10px;
         border: 1px solid var(--border);
-        border-radius: 8px;
-        font-size: 12px;
+        border-radius: 6px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--text-main);
         background: #fff;
         outline: none;
         font-family: 'DM Sans', sans-serif;
-        min-width: 220px;
+        min-width: 200px;
         cursor: pointer;
     }
     .select-kategori:focus { border-color: var(--rs-purple); }
 
     /* ── Result Info ── */
     .result-info {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--text-sub);
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
     /* ── Maintenance Cards ── */
     .cards-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-        margin-bottom: 80px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 60px;
     }
+    @media (max-width: 1200px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 580px) { .cards-grid { grid-template-columns: 1fr; } }
 
     .maintenance-card {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 16px;
+        border-radius: 8px;
+        padding: 12px;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -243,16 +244,16 @@
     .maintenance-card:hover { border-color: var(--rs-purple-mid); box-shadow: 0 4px 10px rgba(107, 33, 168, 0.05); }
     .maintenance-card.selected { border-color: var(--rs-purple); background-color: #faf5ff; box-shadow: 0 0 0 2px rgba(107, 33, 168, 0.15); }
 
-    .card-checkbox { position: absolute; top: 14px; right: 14px; width: 16px; height: 16px; cursor: pointer; accent-color: var(--rs-purple); z-index: 10; }
+    .card-checkbox { position: absolute; top: 12px; right: 12px; width: 14px; height: 14px; cursor: pointer; accent-color: var(--rs-purple); z-index: 10; }
 
-    .mcard-room { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; padding-right: 24px; }
-    .mcard-date-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--rs-purple-soft); color: var(--rs-purple); border-radius: 4px; padding: 3px 8px; font-size: 11px; font-weight: 700; margin-bottom: 10px; border: 1px solid var(--rs-purple-mid); }
-    .mcard-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
-    .mcard-desc { font-size: 12px; color: var(--text-sub); font-weight: 500; line-height: 1.5; margin-bottom: 14px; flex: 1; }
-    .btn-detail-card { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--slate); font-size: 12px; font-weight: 700; color: var(--text-main); cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .mcard-room { font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; padding-right: 20px; }
+    .mcard-date-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--rs-purple-soft); color: var(--rs-purple); border-radius: 4px; padding: 2px 6px; font-size: 10px; font-weight: 700; margin-bottom: 8px; border: 1px solid var(--rs-purple-mid); }
+    .mcard-meta { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
+    .mcard-desc { font-size: 11px; color: var(--text-sub); font-weight: 500; line-height: 1.4; margin-bottom: 10px; flex: 1; }
+    .btn-detail-card { width: 100%; padding: 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--slate); font-size: 11px; font-weight: 700; color: var(--text-main); cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 4px; }
     .btn-detail-card:hover { background: var(--rs-purple-soft); color: var(--rs-purple); border-color: var(--rs-purple); }
 
-    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-sub); font-size: 13px; font-weight: 600; display: none; grid-column: 1 / -1; }
+    .empty-state { text-align: center; padding: 30px 20px; color: var(--text-sub); font-size: 12px; font-weight: 600; display: none; grid-column: 1 / -1; }
 
     /* ── Modals ── */
     .modal-content { border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
@@ -325,6 +326,15 @@
         box-shadow: 0 2px 8px rgba(22, 163, 74, 0.2);
     }
     .btn-modal-save:hover { background: var(--rs-green-hover); }
+    /* Animasi Pop Spin untuk Icon Modal Success */
+    @keyframes pop-spin {
+        0% { transform: scale(0.5) rotate(-90deg); opacity: 0; }
+        60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .animate-pop-spin {
+        animation: pop-spin 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
 </style>
 
 @if(session('success'))
@@ -389,24 +399,31 @@
     </div>
 
     <div class="result-info" id="resultInfo">
-        Menampilkan {{ $maintenances->unique('id_ruangan')->count() }} ruangan termaintenance
+        @php
+            $flatMaintenances = collect($maintenances)->flatten();
+            $groupedMaintenances = $flatMaintenances->groupBy(function($item) {
+                return $item->id_ruangan . '_' . \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d');
+            });
+            $uniqueRooms = $flatMaintenances->unique('id_ruangan')->count();
+        @endphp
+        Menampilkan {{ $uniqueRooms }} ruangan termaintenance
     </div>
 
    <div class="cards-grid" id="containerMaintenance">
-
-        @php
-            $groupedMaintenances = collect($maintenances)->flatten()->groupBy('id_ruangan');
-        @endphp
 
         @foreach($groupedMaintenances as $itemsRuangan)
 
             @php
                 $item = $itemsRuangan->first();
 
-                $teknisi = $itemsRuangan->pluck('nama_teknisi')
-                    ->filter()
-                    ->unique()
-                    ->implode(', ');
+                $teknisi = $itemsRuangan
+                ->pluck('nama_teknisi')
+                ->filter()
+                ->map(function ($item) {
+                    return strtoupper($item);
+                })
+                ->unique()
+                ->implode(', ');
 
                 $statuses = $itemsRuangan->pluck('status_pengaduan')->map(fn($s) => strtolower($s))->unique();
             @endphp
@@ -437,7 +454,7 @@
                     {{ $teknisi ?: '-' }}
                 </div>
 
-                <div class="mcard-status-container" style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px;">
+                <div class="mcard-status-container"  style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
                     @if($itemsRuangan->whereNotNull('id_pengaduan_masuk')->count() > 0)
                         @foreach($itemsRuangan as $x)
                             @php
@@ -446,15 +463,12 @@
                             @endphp
 
                             @if($status == 'Selesai')
-
                                 <div class="mb-2">
                                     <span class="badge badge-success">
                                         <i class="fas fa-check-circle"></i> {{ $label }}: Selesai
                                     </span>
                                 </div>
-
                             @else
-
                                 @php
                                     $badgeClass = 'badge-secondary';
                                     $icon = 'fas fa-info-circle';
@@ -474,50 +488,52 @@
                                     }
                                 @endphp
 
-                                <div class="d-flex align-items-center mb-2">
-                                    <span class="badge {{ $badgeClass }} mr-2">
+                                <div class="mb-2">
+
+                                    <span class="badge {{ $badgeClass }}">
                                         <i class="{{ $icon }}"></i> {{ $label }}: {{ $status }}
                                     </span>
 
-                                    {{-- KONDISI PENAMPILAN TOMBOL --}}
                                     @if($status == 'Pending' || $status == 'Dipending')
 
-                                        <button type="button" class="btn btn-sm btn-primary btn-diterima-maintenance mr-1"
-                                            data-id="{{ $x->id_pengaduan_masuk }}"
-                                            data-kategori="{{ $x->id_kategori }}"
-                                            data-status="diterima"> Update
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger btn-pending-maintenance"
-                                            data-id="{{ $x->id_pengaduan_masuk }}"
-                                            data-kategori="{{ $x->id_kategori }}"
-                                            data-status="Pending"> Update
-                                        </button>
+                                        <div class="mt-2">
+                                            <button type="button"
+                                                class="btn btn-sm btn-primary btn-pending-maintenance"
+                                                data-id="{{ $x->id_pengaduan_masuk }}"
+                                                data-kategori="{{ $x->id_kategori }}">
+                                                Update
+                                            </button>
+                                        </div>
 
                                     @elseif($status == 'Diterima')
 
-                                        <button type="button" class="btn btn-sm btn-primary btn-diterima-maintenance mr-1"
-                                            data-id="{{ $x->id_pengaduan_masuk }}"
-                                            data-kategori="{{ $x->id_kategori }}"
-                                            data-status="diterima"> Update
-                                        </button>
+                                        <div class="mt-2">
+                                            <button type="button"
+                                                class="btn btn-sm btn-primary btn-diterima-maintenance"
+                                                data-id="{{ $x->id_pengaduan_masuk }}"
+                                                data-kategori="{{ $x->id_kategori }}"
+                                                data-status="diterima">
+                                                Update
+                                            </button>
+                                        </div>
 
                                     @elseif($status == 'Diproses')
 
-                                        <button type="button" class="btn btn-sm btn-success btn-selesai-maintenance mr-1"
-                                            data-id="{{ $x->id_pengaduan_masuk }}"
-                                            data-kategori="{{ $x->id_kategori }}"
-                                            data-status="Selesai"> Selesai
-                                        </button>
-
+                                        <div class="mt-2">
+                                            <button type="button"
+                                                class="btn btn-sm btn-success btn-selesai-maintenance"
+                                                data-id="{{ $x->id_pengaduan_masuk }}"
+                                                data-kategori="{{ $x->id_kategori }}"
+                                                data-status="Selesai">
+                                                Selesai
+                                            </button>
+                                        </div>
                                     @endif
-
                                 </div>
-
                             @endif
-
                         @endforeach
                     @else
-                        <span class="badge badge-primary"><i class="fas fa-calendar-check"></i> Jadwal Maintenance</span>
+                        <span class="badge badge-success"><i class="fas fa-check-circle"></i> Maintenance Selesai</span>
                     @endif
                 </div>
 
@@ -598,26 +614,25 @@
 
                         <div class="col-md-6 form-group">
                             <label class="form-label-sm">Tanggal</label>
-                            <input type="date" name="tanggal" id="inputTanggal" class="form-control-sm-custom">
+                            <input type="date" name="tanggal" id="inputTanggal" class="form-control-sm-custom" value="{{ date('Y-m-d') }}" readonly style="background:#f1f5f9;color:#64748b;">
                         </div>
 
                         <div class="col-md-6 form-group">
                             <label class="form-label-sm">Jam</label>
-                            <input type="time" name="jam" id="inputJam" class="form-control-sm-custom">
+                            <input type="time" name="jam" id="inputJam" class="form-control-sm-custom" value="{{ date('H:i') }}" readonly style="background:#f1f5f9;color:#64748b;">
                         </div>
 
                         <div class="col-md-6 form-group">
                             <label class="form-label-sm">Nama Teknisi</label>
-                            @if(Auth::user()->role == "teknisi")
-                                <input type="text" name="nama_teknisi" value="{{ Auth::user()->name }}" class="form-control-sm-custom" readonly style="background:#f1f5f9;color:#64748b;">
-                            @else
-                                <input type="text" name="nama_teknisi" value="{{ Auth::user()->name }}" class="form-control-sm-custom">
-                            @endif
+                            <input type="text" name="nama_teknisi" value="{{ strtoupper(Auth::user()->name) }}" class="form-control-sm-custom" readonly style="background:#f1f5f9;color:#64748b;text-transform:uppercase;">
                         </div>
 
                         <div class="col-md-12 form-group">
                             <label class="form-label-sm">Deskripsi</label>
-                            <textarea name="deskripsi" class="form-control-sm-custom" rows="3" placeholder="Deskripsi pekerjaan maintenance..."></textarea>
+                            <div id="deskripsiContainer" style="border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--slate);min-height:60px;">
+                                <p id="deskripsiPlaceholder" style="color:#9ca3af;font-size:12px;margin:0;">Pilih kategori perangkat terlebih dahulu...</p>
+                            </div>
+                            <input type="hidden" name="deskripsi" id="deskripsiGabungan">
                         </div>
 
                     </div>
@@ -715,7 +730,76 @@
     </div>
 </div>
 
+{{-- Modal Success (Centang / Hapus) --}}
+<div class="modal fade" id="modalSuccess" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div id="successIconContainer" style="width: 64px; height: 64px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i id="successIcon" class="fas fa-check" style="font-size: 32px; color: #16a34a;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Berhasil!</h5>
+                <p id="successMsg" style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Data berhasil disimpan.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Konfirmasi Hapus --}}
+<div class="modal fade" id="modalDeleteMaintenance" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div style="width: 64px; height: 64px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-trash" style="font-size: 28px; color: #dc2626;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Hapus Data?</h5>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Menghapus <strong id="hapusCount">0</strong> data terpilih. Tindakan ini tidak bisa dibatalkan.</p>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn-cancel" data-dismiss="modal" style="flex: 1; border:none; background:#f1f5f9; padding: 9px 16px; font-size: 11.5px; font-weight: 700; border-radius: 9px; cursor: pointer; color: #475569;">Batal</button>
+                    <button type="button" id="confirmDeleteBtn" style="flex: 1; padding: 9px 16px; font-size: 11.5px; font-weight: 700; border: none; border-radius: 9px; background: #dc2626; color: #fff; cursor: pointer; transition: background .15s; box-shadow: 0 4px 10px rgba(220, 38, 38, .3);">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+
+    function showSuccessModal(message, type = 'success') {
+        $('#successMsg').text(message);
+
+        let iconContainer = $('#successIconContainer');
+        let icon = $('#successIcon');
+
+        iconContainer.removeClass('animate-pop-spin');
+        void iconContainer[0].offsetWidth;
+        iconContainer.addClass('animate-pop-spin');
+
+        if(type === 'danger') {
+            iconContainer.css('background', '#fee2e2');
+            icon.attr('class', 'fas fa-trash').css('color', '#dc2626');
+        } else {
+            iconContainer.css('background', '#dcfce7');
+            icon.attr('class', 'fas fa-check').css('color', '#16a34a');
+        }
+
+        $('.modal').modal('hide');
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+
+        setTimeout(function() {
+            $('#modalSuccess').modal('show');
+            setTimeout(function() {
+                $('#modalSuccess').modal('hide');
+            }, 1500);
+        }, 100);
+    }
+
+    $('#modalSuccess').on('hidden.bs.modal', function () {
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+    });
 
     function syncStatusUI() {
         let status = $('#inputStatus').val();
@@ -827,14 +911,14 @@
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert(data.message);
-                location.reload();
+                showSuccessModal(data.message, 'success');
+                setTimeout(() => location.reload(), 1500);
             } else {
-                alert('Ditolak: ' + data.message);
+                showSuccessModal('Ditolak: ' + data.message, 'danger');
             }
         })
         .catch(err => {
-            alert('Terjadi kesalahan jaringan atau sistem!');
+            showSuccessModal('Terjadi kesalahan jaringan atau sistem!', 'danger');
             console.error(err);
         });
     });
@@ -952,17 +1036,25 @@
         checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
     });
 
+    let idsToDelete = [];
     $('#btn-hapus-terpilih').on('click', function () {
-        var ids = [];
-        $('.maintenance-check:checked').each(function () { ids.push($(this).data('id')); });
-        if (ids.length === 0) { alert('Pilih minimal satu data untuk dihapus.'); return; }
-        if (!confirm('Hapus ' + ids.length + ' jadwal maintenance yang dipilih?')) return;
+        idsToDelete = [];
+        $('.maintenance-check:checked').each(function () { idsToDelete.push($(this).data('id')); });
+        if (idsToDelete.length === 0) {
+            showSuccessModal('Pilih minimal satu data untuk dihapus.', 'danger');
+            return;
+        }
+        $('#hapusCount').text(idsToDelete.length);
+        $('#modalDeleteMaintenance').modal('show');
+    });
 
+    $('#confirmDeleteBtn').on('click', function () {
         $.ajax({
             url: "{{ url('maintenance/destroy') }}",
             method: 'POST',
-            data: { _token: '{{ csrf_token() }}', ids: ids },
+            data: { _token: '{{ csrf_token() }}', ids: idsToDelete },
             success: function (res) {
+                $('#modalDeleteMaintenance').modal('hide');
                 $('.maintenance-check:checked').each(function () {
                     $(this).closest('.maintenance-card').fadeOut(300, function () {
                         $(this).remove();
@@ -970,12 +1062,12 @@
                     });
                 });
                 updateJumlahDipilih();
-                var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius:10px;font-size:13px;background:var(--rs-green-soft);color:var(--rs-green-hover);border:1px solid #bbf7d0;">'
-                    + '<i class="fas fa-check-circle mr-1"></i> ' + res.count + ' data berhasil dihapus.'
-                    + '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button></div>';
-                $('.col-md-12').prepend(alertHtml);
+                showSuccessModal(res.count + ' data berhasil dihapus.', 'danger');
             },
-            error: function () { alert('Gagal menghapus data. Silakan coba lagi.'); }
+            error: function () {
+                $('#modalDeleteMaintenance').modal('hide');
+                showSuccessModal('Gagal menghapus data. Silakan coba lagi.', 'danger');
+            }
         });
     });
 
@@ -996,18 +1088,67 @@
 
     $(document).on('change', 'input[name="id_kategori[]"]', function () {
         $('#countPilihan').text($('input[name="id_kategori[]"]:checked').length + ' kategori dipilih');
+        updateDeskripsi();
+    });
+
+    function updateDeskripsi() {
+        var container = $('#deskripsiContainer');
+        var placeholder = $('#deskripsiPlaceholder');
+        var checked = $('input[name="id_kategori[]"]:checked');
+
+        // Simpan value yang sudah diketik user
+        var existing = {};
+        container.find('.desc-row input[type="text"]').each(function() {
+            existing[$(this).data('kat-id')] = $(this).val();
+        });
+
+        container.find('.desc-row').remove();
+
+        if (checked.length === 0) {
+            placeholder.show();
+            return;
+        }
+
+        placeholder.hide();
+
+        checked.each(function() {
+            var id = $(this).val();
+            var label = $(this).closest('.form-check').find('label').text().trim();
+            var savedVal = existing[id] || '';
+
+            var row = $(
+                '<div class="desc-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+                    '<span style="font-size:12px;font-weight:600;color:var(--text-main);min-width:100px;white-space:nowrap;">' + label + ' :</span>' +
+                    '<input type="text" data-kat-id="' + id + '" class="form-control-sm-custom desc-input" style="flex:1;font-size:12px;" placeholder="Deskripsi untuk ' + label + '..." value="' + savedVal + '">' +
+                '</div>'
+            );
+            container.append(row);
+        });
+    }
+
+    // Gabungkan semua deskripsi sebelum submit
+    $('#modalMaintenance form').on('submit', function() {
+        var parts = [];
+        $('#deskripsiContainer .desc-row').each(function() {
+            var label = $(this).find('span').text().replace(' :', '').trim();
+            var val = $(this).find('input').val().trim() || '-';
+            parts.push(label + ' : ' + val);
+        });
+        $('#deskripsiGabungan').val(parts.join(' | '));
     });
 
     $('#pilihSemua').on('click', function (e) {
         e.preventDefault();
         $('input[name="id_kategori[]"]:visible').prop('checked', true);
         $('#countPilihan').text($('input[name="id_kategori[]"]:checked').length + ' kategori dipilih');
+        updateDeskripsi();
     });
 
     $('#hapusSemua').on('click', function (e) {
         e.preventDefault();
         $('input[name="id_kategori[]"]').prop('checked', false);
         $('#countPilihan').text('0 kategori dipilih');
+        updateDeskripsi();
     });
 
     $('#modalMaintenance').on('hidden.bs.modal', function () {
@@ -1015,6 +1156,7 @@
         $('#countPilihan').text('0 kategori dipilih');
         $('#searchPerangkat').val('');
         $('.perangkat-item, .kategori-group').show();
+        updateDeskripsi();
     });
 
     $('#modalMaintenance').on('show.bs.modal', function () {

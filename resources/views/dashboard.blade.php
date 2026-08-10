@@ -26,8 +26,8 @@
 
     /* ── Stat Cards (Modern Flat Design) ── */
     .stat-card {
-        border-radius: 16px;
-        padding: 24px 24px;
+        border-radius: 12px;
+        padding: 16px 20px;
         color: #fff;
         display: flex;
         align-items: center;
@@ -80,7 +80,7 @@
         z-index: 2;
     }
     .stat-label {
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 700;
         opacity: .85;
         text-transform: uppercase;
@@ -88,19 +88,19 @@
         margin-bottom: 4px;
     }
     .stat-value {
-        font-size: 38px;
+        font-size: 28px;
         font-weight: 800;
         line-height: 1;
         letter-spacing: -1px;
     }
     .stat-icon {
-        width: 56px; height: 56px;
+        width: 48px; height: 48px;
         background: rgba(255,255,255,.15); /* Flat background icon */
-        border-radius: 14px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
+        font-size: 20px;
         position: relative;
         z-index: 2;
     }
@@ -128,13 +128,8 @@
 
 <div class="dashboard-page container-fluid px-0">
 
-    {{-- Query Data PHP --}}
-    @php
-        $userCount = DB::table('users')->count();
-        $perangkatCount = DB::table('perangkat')->count();
-        $maintenanceCount = DB::table('maintenance')->distinct()->count('id_ruangan');
-        $ruanganCount = DB::table('ruangan')->count();
-    @endphp
+    {{-- Data dikirim dari DashboardCtrl --}}
+
 
     {{-- Grid Stats --}}
     <div class="row">

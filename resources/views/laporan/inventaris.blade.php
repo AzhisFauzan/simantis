@@ -19,7 +19,7 @@
         --border:    #e2e8f0;
         --text-main: #0f172a;
         --text-sub:  #64748b;
-        --radius:    10px;
+        --radius:    8px;
     }
 
     * { box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
@@ -33,7 +33,7 @@
         padding: 4px 0;
     }
     .page-title {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text-main);
         letter-spacing: -0.3px;
@@ -44,13 +44,13 @@
     .filter-wrapper {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 12px;
+        border-radius: 8px;
         padding: 20px 24px;
         margin-bottom: 24px;
         box-shadow: 0 1px 8px rgba(0,0,0,.02);
     }
     .filter-title {
-        font-size: 14px;
+        font-size: 10.5px;
         font-weight: 700;
         color: var(--rs-purple);
         margin-bottom: 16px;
@@ -86,7 +86,7 @@
         border: none;
         border-radius: 8px;
         padding: 8px 16px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 600;
         cursor: pointer;
         transition: background .15s;
@@ -103,7 +103,7 @@
         border: none;
         border-radius: 8px;
         padding: 8px 16px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 600;
         cursor: pointer;
         transition: background .15s;
@@ -120,7 +120,7 @@
         border: none;
         border-radius: 8px;
         padding: 8px 16px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 600;
         cursor: pointer;
         transition: background .15s;
@@ -137,7 +137,7 @@
         border: 1px solid var(--border);
         border-radius: 8px;
         padding: 8px 16px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 600;
         cursor: pointer;
         transition: all .15s;
@@ -149,7 +149,7 @@
     .room-stat-card {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 12px;
+        border-radius: 8px;
         padding: 16px;
         display: flex;
         flex-direction: column;
@@ -173,13 +173,13 @@
         flex-shrink: 0;
     }
     .room-title {
-        font-size: 14px;
+        font-size: 10.5px;
         font-weight: 700;
         color: var(--text-main);
         margin: 0 0 2px 0;
     }
     .room-subtitle {
-        font-size: 12px;
+        font-size: 10.5px;
         color: var(--text-sub);
         font-weight: 500;
     }
@@ -198,7 +198,7 @@
     .detail-table-wrapper {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 12px;
+        border-radius: 8px;
         overflow: hidden;
         margin-bottom: 24px;
         box-shadow: 0 4px 16px rgba(0,0,0,.04);
@@ -212,7 +212,7 @@
     }
     .detail-table-title {
         color: #fff;
-        font-size: 14px;
+        font-size: 10.5px;
         font-weight: 700;
         margin: 0;
         display: flex;
@@ -225,14 +225,14 @@
         border: none;
         border-radius: 6px;
         padding: 4px 10px;
-        font-size: 12px;
+        font-size: 10.5px;
         font-weight: 600;
         cursor: pointer;
         transition: background .15s;
     }
     .btn-close-table:hover { background: rgba(255,255,255,.3); }
 
-    .custom-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .custom-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
     .custom-table thead th {
         background: var(--slate);
         color: var(--text-sub);
@@ -241,7 +241,7 @@
         letter-spacing: .5px;
         padding: 12px 16px;
         border-bottom: 1px solid var(--border);
-        font-size: 11px;
+        font-size: 10.5px;
     }
     .custom-table tbody tr { border-bottom: 1px solid var(--slate); transition: background .15s; }
     .custom-table tbody tr:hover { background: var(--rs-purple-soft); }
@@ -253,7 +253,7 @@
         padding: 48px 20px;
         background: #fff;
         border: 1px dashed var(--border);
-        border-radius: 12px;
+        border-radius: 8px;
     }
     .empty-icon {
         width: 56px; height: 56px;

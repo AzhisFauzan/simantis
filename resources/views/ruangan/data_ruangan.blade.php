@@ -20,7 +20,7 @@
         --border:    #e2e8f0;
         --text-main: #0f172a;
         --text-sub:  #64748b;
-        --radius:    10px;
+        --radius:    8px;
     }
 
     * { box-sizing: border-box; }
@@ -35,14 +35,14 @@
         padding: 4px 0;
     }
     .page-title {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text-main);
         letter-spacing: -0.3px;
         margin: 0;
     }
     .page-subtitle {
-        font-size: 13px;
+        font-size: 11.5px;
         color: var(--text-sub);
         margin-top: 2px;
     }
@@ -56,8 +56,8 @@
         color: #fff;
         border: none;
         border-radius: var(--radius);
-        padding: 10px 18px;
-        font-size: 13px;
+        padding: 6px 12px;
+        font-size: 11.5px;
         font-weight: 600;
         cursor: pointer;
         text-decoration: none;
@@ -69,8 +69,8 @@
     /* ── Stat Card (Ungu RS Solid) ── */
     .stat-card {
         background: var(--rs-purple); /* Warna Solid */
-        border-radius: 12px;
-        padding: 16px 20px;
+        border-radius: 8px;
+        padding: 12px 16px;
         color: #fff;
         margin-bottom: 20px;
         display: flex;
@@ -97,7 +97,7 @@
         background: rgba(255,255,255,.08);
     }
     .stat-label {
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 600;
         opacity: .8;
         text-transform: uppercase;
@@ -105,18 +105,18 @@
         margin-bottom: 4px;
     }
     .stat-value {
-        font-size: 32px;
+        font-size: 26px;
         font-weight: 700;
         line-height: 1;
     }
     .stat-icon {
-        width: 48px; height: 48px;
+        width: 40px; height: 40px;
         background: rgba(255,255,255,.2);
-        border-radius: 12px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
+        font-size: 16px;
         position: relative;
         z-index: 1;
         flex-shrink: 0;
@@ -139,15 +139,15 @@
         top: 50%;
         transform: translateY(-50%);
         color: #b0b8c9;
-        font-size: 13px;
+        font-size: 11.5px;
         z-index: 1;
     }
     .search-input {
         width: 100%;
-        padding: 8px 12px 8px 34px;
+        padding: 6px 10px 6px 30px;
         border: 1.5px solid var(--border);
         border-radius: 9px;
-        font-size: 13px;
+        font-size: 11.5px;
         color: var(--text-main);
         background: #fff;
         outline: none;
@@ -161,13 +161,13 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 34px; height: 34px;
+        width: 28px; height: 28px;
         border: 1.5px solid var(--border);
         border-radius: 9px;
         background: transparent;
         color: var(--text-sub);
         text-decoration: none;
-        font-size: 12px;
+        font-size: 10.5px;
         transition: all .15s;
         flex-shrink: 0;
     }
@@ -177,7 +177,7 @@
     .table-card {
         background: #fff;
         border: 0.5px solid var(--border);
-        border-radius: 14px;
+        border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 1px 8px rgba(0,0,0,.04);
         margin-bottom: 16px;
@@ -187,7 +187,7 @@
     #ruanganTable {
         width: 100%;
         border-collapse: collapse;
-        font-size: 13px;
+        font-size: 11.5px;
         margin: 0;
     }
 
@@ -197,11 +197,11 @@
     }
     #ruanganTable thead th {
         color: #fff;
-        font-size: 0.78rem;
+        font-size: 0.7rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        padding: 14px 14px;
+        padding: 10px 10px;
         border: none;
         white-space: nowrap;
     }
@@ -213,9 +213,9 @@
     #ruanganTable tbody tr:hover { background: var(--slate); }
 
     #ruanganTable tbody td {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         color: var(--text-main);
-        padding: 12px 14px;
+        padding: 8px 10px;
         border: none;
         vertical-align: middle;
     }
@@ -232,7 +232,7 @@
         background: transparent;
         cursor: pointer;
         transition: all .15s;
-        font-size: 13px;
+        font-size: 11.5px;
     }
     .btn-icon-edit   { color: #d97706; }
     .btn-icon-edit:hover  { background: #fef3c7; border-color: #fde68a; }
@@ -248,14 +248,14 @@
         margin-bottom: 80px;
     }
     .pagination-info {
-        font-size: 12px;
+        font-size: 10.5px;
         color: var(--text-sub);
     }
     .pagination-wrap .pagination { margin: 0; }
     .pagination-wrap .page-link {
         border-radius: 8px !important;
         margin: 0 2px;
-        font-size: 12px;
+        font-size: 10.5px;
         font-weight: 500;
         color: #374151;
         border: 0.5px solid var(--border);
@@ -270,7 +270,7 @@
 
     /* ── Modals (Solid Colors) ── */
     .modal-content {
-        border-radius: 14px;
+        border-radius: 8px;
         border: none;
         box-shadow: 0 20px 60px rgba(0,0,0,.12);
         font-family: 'DM Sans', sans-serif;
@@ -321,7 +321,7 @@
 
     .form-label-custom {
         display: block;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 700;
         color: var(--text-sub);
         margin-bottom: 6px;
@@ -333,7 +333,7 @@
         padding: 9px 12px;
         border: 1.5px solid var(--border);
         border-radius: 9px;
-        font-size: 13px;
+        font-size: 11.5px;
         color: var(--text-main);
         background: #fff;
         outline: none;
@@ -354,7 +354,7 @@
 
     .btn-cancel {
         padding: 9px 16px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 500;
         border: 1.5px solid var(--border);
         border-radius: 9px;
@@ -368,7 +368,7 @@
     /* Tombol Submit Modal */
     .btn-modal-main {
         padding: 9px 20px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 700;
         border: none;
         border-radius: 9px;
@@ -382,7 +382,7 @@
 
     .btn-modal-amber {
         padding: 9px 20px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 700;
         border: none;
         border-radius: 9px;
@@ -396,7 +396,7 @@
 
     .btn-modal-red {
         padding: 9px 20px;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 700;
         border: none;
         border-radius: 9px;
@@ -408,23 +408,14 @@
     }
     .btn-modal-red:hover { opacity: .88; }
 
-    /* ── Delete modal confirm ── */
-    .delete-confirm-icon {
-        width: 64px; height: 64px;
-        background: #fee2e2;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 14px;
-        font-size: 26px;
-        color: #dc2626;
+    /* Animasi Pop Spin untuk Icon Modal Success */
+    @keyframes pop-spin {
+        0% { transform: scale(0.5) rotate(-90deg); opacity: 0; }
+        60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
-    .delete-confirm-text {
-        text-align: center;
-        font-size: 13px;
-        color: #374151;
-        line-height: 1.6;
+    .animate-pop-spin {
+        animation: pop-spin 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 </style>
 
@@ -595,39 +586,88 @@
     </div>
 </div>
 
-{{-- Modal Hapus --}}
-<div class="modal fade" id="modalHapusruangan" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header-red">
-                <h5 class="modal-title-custom">Hapus Ruangan</h5>
-                <button type="button" class="modal-close-btn" data-dismiss="modal">×</button>
-            </div>
+{{-- Modal Success (Centang / Hapus) --}}
+<div class="modal fade" id="modalSuccess" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
             <div class="modal-body">
-                <div class="delete-confirm-icon">
-                    <i class="fas fa-trash-alt"></i>
+                <div id="successIconContainer" style="width: 64px; height: 64px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i id="successIcon" class="fas fa-check" style="font-size: 32px; color: #16a34a;"></i>
                 </div>
-                <div class="delete-confirm-text">
-                    Apakah Anda yakin ingin menghapus ruangan<br>
-                    <strong id="hapus_nama_ruangan" style="color:#111827"></strong>?
-                    <br><br>
-                    <span style="color:var(--text-sub);font-size:11px">Tindakan ini tidak dapat dibatalkan.</span>
-                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Berhasil!</h5>
+                <p id="successMsg" style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Data berhasil disimpan.</p>
             </div>
-            <div class="modal-footer d-flex justify-content-center" style="gap:8px">
-                <button type="button" class="btn-cancel" data-dismiss="modal">Batal</button>
-                <form id="formHapus" method="POST" style="margin:0">
-                    @csrf
-                    <button type="submit" class="btn-modal-red">Ya, Hapus</button>
-                </form>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Konfirmasi Hapus --}}
+<div class="modal fade" id="modalHapusruangan" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div style="width: 64px; height: 64px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-trash" style="font-size: 28px; color: #dc2626;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Hapus Ruangan?</h5>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Data yang dihapus tidak bisa dikembalikan.</p>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn-cancel" data-dismiss="modal" style="flex: 1; border:none; background:#f1f5f9;">Batal</button>
+                    <form id="formHapus" method="POST" style="margin:0; flex:1;">
+                        @csrf
+                        <button type="submit" style="width:100%; padding: 9px 16px; font-size: 11.5px; font-weight: 700; border: none; border-radius: 9px; background: #dc2626; color: #fff; cursor: pointer; transition: background .15s; box-shadow: 0 4px 10px rgba(220, 38, 38, .3);">Hapus</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    const baseUrl = "{{ url('') }}";
+    function showSuccessModal(message, type = 'success') {
+        $('#successMsg').text(message);
+        
+        let iconContainer = $('#successIconContainer');
+        let icon = $('#successIcon');
+        
+        iconContainer.removeClass('animate-pop-spin');
+        void iconContainer[0].offsetWidth; 
+        iconContainer.addClass('animate-pop-spin');
 
+        if(type === 'danger') {
+            iconContainer.css('background', '#fee2e2'); 
+            icon.attr('class', 'fas fa-trash').css('color', '#dc2626'); 
+        } else {
+            iconContainer.css('background', '#dcfce7'); 
+            icon.attr('class', 'fas fa-check').css('color', '#16a34a'); 
+        }
+
+        $('.modal').modal('hide');
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+
+        setTimeout(function() {
+            $('#modalSuccess').modal('show');
+            setTimeout(function() {
+                $('#modalSuccess').modal('hide');
+            }, 1500);
+        }, 100);
+    }
+
+    $('#modalSuccess').on('hidden.bs.modal', function () {
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+    });
+
+    @if(session('success'))
+        $(document).ready(function() {
+            let msg = "{{ session('success') }}";
+            let type = msg.toLowerCase().includes('dihapus') ? 'danger' : 'success';
+            showSuccessModal(msg, type);
+        });
+    @endif
+
+    const baseUrl = "{{ url('') }}";
     const allData = @json($all_ruangan);
     const liveSearchInput = document.getElementById('liveSearchInput');
     const resetSearch = document.getElementById('resetSearch');

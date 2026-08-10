@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class AuthCtrl extends Controller
@@ -26,10 +27,9 @@ class AuthCtrl extends Controller
 
     $user = DB::table('users')
         ->whereRaw('BINARY name = ?', [$request->name])
-        ->where('password', $request->password)
         ->first();
 
-    if (!$user) {
+    if (!$user || !Hash::check($request->password, $user->password)) {
         return back()
             ->withErrors(['login_error' => 'Username atau Password salah!'])
             ->withInput();

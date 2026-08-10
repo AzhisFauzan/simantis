@@ -80,10 +80,10 @@ class LaporanCtrl extends Controller
         $query = DB::table('maintenance as m')
             ->leftJoin('kategori_perangkat as k', 'm.id_kategori', '=', 'k.id_kategori')
             ->leftJoin('ruangan as r', 'm.id_ruangan', '=', 'r.id_ruangan')
-            ->leftJoin('perangkat as p', function ($join) {
-                $join->on('p.id_ruangan', '=', 'm.id_ruangan')->on('p.id_kategori', '=', 'm.id_kategori');
+            ->leftJoin('pengaduan_masuk as pm', function($join) {
+                $join->on('m.id_pengaduan_masuk', '=', 'pm.id_pengaduan_masuk')
+                     ->on('m.id_kategori', '=', 'pm.id_kategori');
             })
-            ->leftJoin('pengaduan_masuk as pm', 'm.id_pengaduan_masuk', '=', 'pm.id_pengaduan_masuk')
             ->where(function ($q) {
                 $q->where('pm.status', '=', 'Selesai')->orWhereNull('m.id_pengaduan_masuk');
             })
@@ -98,19 +98,7 @@ class LaporanCtrl extends Controller
                 'm.deskripsi',
                 'm.id_pengaduan_masuk',
                 'pm.deskripsi_masalah as deskripsi_pengaduan',
-                DB::raw('GROUP_CONCAT(DISTINCT p.kode_inventaris SEPARATOR ", ") as kode_inventaris')
-            )
-            ->groupBy(
-                'm.id_maintenance',
-                'm.id_ruangan',
-                'r.nama_ruangan',
-                'm.id_kategori',
-                'k.nama_kategori',
-                'm.nama_teknisi',
-                'm.tanggal',
-                'm.deskripsi',
-                'm.id_pengaduan_masuk',
-                'pm.deskripsi_masalah'
+                DB::raw('COALESCE(pm.kode_inventaris, (SELECT MIN(p.kode_inventaris) FROM perangkat p WHERE p.id_ruangan = m.id_ruangan AND p.id_kategori = m.id_kategori)) as kode_inventaris')
             );
 
         if ($request->filled('id_ruangan')) {
@@ -135,7 +123,7 @@ class LaporanCtrl extends Controller
 
             $kategori = $group->pluck('nama_kategori')->unique()->implode(', ');
             $id_kategori = $group->pluck('id_kategori')->unique()->implode(',');
-            $teknisi = $group->pluck('nama_teknisi')->unique()->filter()->implode(', ');
+            $teknisi = $group->pluck('nama_teknisi')->map(fn($t) => strtoupper($t))->unique()->filter()->implode(', ');
             $kodeInventaris = $group->pluck('kode_inventaris')->unique()->filter()->implode(', ');
 
             $hasPengaduan = $group->whereNotNull('id_pengaduan_masuk')->count() > 0;
@@ -176,10 +164,10 @@ class LaporanCtrl extends Controller
         $query = DB::table('maintenance as m')
         ->leftJoin('kategori_perangkat as k', 'm.id_kategori', '=', 'k.id_kategori')
         ->leftJoin('ruangan as r', 'm.id_ruangan', '=', 'r.id_ruangan')
-        ->leftJoin('perangkat as p', function ($join) {
-            $join->on('p.id_ruangan', '=', 'm.id_ruangan')->on('p.id_kategori', '=', 'm.id_kategori');
+        ->leftJoin('pengaduan_masuk as pm', function($join) {
+            $join->on('m.id_pengaduan_masuk', '=', 'pm.id_pengaduan_masuk')
+                 ->on('m.id_kategori', '=', 'pm.id_kategori');
         })
-        ->leftJoin('pengaduan_masuk as pm', 'm.id_pengaduan_masuk', '=', 'pm.id_pengaduan_masuk')
         ->where(function ($q) {
             $q->where('pm.status', '=', 'Selesai')->orWhereNull('m.id_pengaduan_masuk');
         })
@@ -194,19 +182,7 @@ class LaporanCtrl extends Controller
             'm.deskripsi',
             'm.id_pengaduan_masuk',
             'pm.deskripsi_masalah as deskripsi_pengaduan',
-            DB::raw('GROUP_CONCAT(DISTINCT p.kode_inventaris SEPARATOR ", ") as kode_inventaris')
-        )
-        ->groupBy(
-            'm.id_maintenance',
-            'm.id_ruangan',
-            'r.nama_ruangan',
-            'm.id_kategori',
-            'k.nama_kategori',
-            'm.nama_teknisi',
-            'm.tanggal',
-            'm.deskripsi',
-            'm.id_pengaduan_masuk',
-            'pm.deskripsi_masalah'
+            DB::raw('COALESCE(pm.kode_inventaris, (SELECT MIN(p.kode_inventaris) FROM perangkat p WHERE p.id_ruangan = m.id_ruangan AND p.id_kategori = m.id_kategori)) as kode_inventaris')
         );
 
         if ($request->filled('id_ruangan')) {
@@ -231,7 +207,7 @@ class LaporanCtrl extends Controller
 
             $kategori = $group->pluck('nama_kategori')->unique()->implode(', ');
             $id_kategori = $group->pluck('id_kategori')->unique()->implode(',');
-            $teknisi = $group->pluck('nama_teknisi')->unique()->filter()->implode(', ');
+            $teknisi = $group->pluck('nama_teknisi')->map(fn($t) => strtoupper($t))->unique()->filter()->implode(', ');
             $kodeInventaris = $group->pluck('kode_inventaris')->unique()->filter()->implode(', ');
 
             $hasPengaduan = $group->whereNotNull('id_pengaduan_masuk')->count() > 0;

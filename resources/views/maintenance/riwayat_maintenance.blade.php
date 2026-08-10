@@ -47,7 +47,7 @@
         border: 1px solid var(--border);
         border-radius: 8px;
         padding: 8px 16px;
-        font-size: 12px;
+        font-size: 10.5px;
         font-weight: 700;
         cursor: pointer;
         text-decoration: none !important;
@@ -62,13 +62,13 @@
     .filter-wrapper {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 16px 20px;
+        border-radius: 8px;
+        padding: 12px 16px;
         margin-bottom: 20px;
     }
     .filter-label {
         display: block;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 700;
         color: var(--text-main);
         text-transform: uppercase;
@@ -79,7 +79,7 @@
         padding: 8px 12px;
         border: 1px solid var(--border);
         border-radius: 8px;
-        font-size: 12px;
+        font-size: 10.5px;
         font-weight: 600;
         color: var(--text-main);
         background: #fff;
@@ -92,7 +92,7 @@
     .table-card {
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 14px;
+        border-radius: 8px;
         overflow: hidden;
         margin-bottom: 40px;
         box-shadow: 0 1px 8px rgba(0,0,0,.03);
@@ -101,12 +101,12 @@
     #tabelRiwayat {
         width: 100%;
         border-collapse: collapse;
-        font-size: 13px;
+        font-size: 11.5px;
     }
     #tabelRiwayat thead tr { background: var(--rs-purple); }
     #tabelRiwayat thead th {
         padding: 14px 16px;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 700;
         color: #fff;
         text-transform: uppercase;
@@ -137,7 +137,7 @@
         color: var(--rs-purple);
         padding: 4px 10px;
         border-radius: 6px;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 700;
         border: 1px solid var(--rs-purple-mid);
     }
@@ -153,12 +153,12 @@
         background: transparent;
         cursor: pointer;
         transition: all .15s;
-        font-size: 13px;
+        font-size: 11.5px;
         color: var(--rs-purple);
     }
     .btn-icon:hover { background: var(--rs-purple-soft); border-color: var(--rs-purple-mid); }
 
-    .modal-content { border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+    .modal-content { border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
     .mhead {
         display: flex;
         justify-content: space-between;
@@ -167,14 +167,14 @@
         background: var(--rs-purple);
     }
     .mhead .modal-title { font-size: 15px; font-weight: 700; color: #fff; margin: 0; }
-    .mhead .close { color: #fff; opacity: .85; border:none; background:none; font-size: 20px; cursor:pointer; }
+    .mhead .close { color: #fff; opacity: .85; border:none; background:none; font-size: 16px; cursor:pointer; }
 
     .modal-body { padding: 20px 24px; }
     .modal-footer { border-top: 1px solid var(--slate); padding: 14px 24px; background: #fff; }
 
     .detail-list { display: flex; flex-direction: column; gap: 10px; }
     .detail-item {
-        padding: 12px 14px;
+        padding: 8px 10px;
         background: var(--slate);
         border-radius: 8px;
         border: 1px solid var(--border);
@@ -187,9 +187,9 @@
         margin-bottom: 4px;
         letter-spacing: 0.5px;
     }
-    .detail-value { font-size: 13px; font-weight: 700; color: var(--text-main); }
+    .detail-value { font-size: 11.5px; font-weight: 700; color: var(--text-main); }
     .detail-value-desc {
-        font-size: 12px;
+        font-size: 10.5px;
         font-weight: 500;
         color: var(--text-main);
         line-height: 1.5;
@@ -202,7 +202,7 @@
 
     .btn-tutup-detail {
         padding: 8px 20px;
-        font-size: 12px;
+        font-size: 10.5px;
         font-weight: 700;
         border: none;
         border-radius: 6px;

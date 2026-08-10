@@ -245,7 +245,7 @@
         <li class="nav-item {{ request()->is('ruangan/ruangan*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/ruangan/ruangan') }}">
                 <i class="fas fa-fw fa-desktop"></i>
-                <span>Data Perangkat IT</span>
+                <span>Inventaris Perangkat IT</span>
             </a>
         </li>
 
@@ -291,7 +291,7 @@
         <li class="nav-item {{ request()->is('ruangan/ruangan*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/ruangan/ruangan') }}">
                 <i class="fas fa-fw fa-desktop"></i>
-                <span>Data Perangkat IT</span>
+                <span>Inventaris Perangkat IT</span>
             </a>
         </li>
 
@@ -307,34 +307,39 @@
 </ul>
 
 <script>
+    let sidebarPinned = false;
     let sidebarReady = false;
 
-    // Simpan state ke localStorage
     function saveSidebarState(isToggled) {
         localStorage.setItem('sidebarToggled', isToggled);
         localStorage.setItem('sidebarPinned', sidebarPinned);
     }
 
-    // Load state dari localStorage
     function loadSidebarState() {
-        const savedToggled = localStorage.getItem('sidebarToggled') === 'true';
-        const savedPinned = localStorage.getItem('sidebarPinned') === 'true';
 
-        sidebarPinned = savedPinned;
+        sidebarPinned = localStorage.getItem('sidebarPinned') === 'true';
 
-        // Terapkan class berdasarkan state
-        if (savedToggled && !sidebarPinned) {
-            $("body").addClass("sidebar-toggled");
-            $(".sidebar").addClass("toggled");
-        } else {
+        if (sidebarPinned) {
+
             $("body").removeClass("sidebar-toggled");
             $(".sidebar").removeClass("toggled");
+
+            $("#btn-pin-sidebar")
+                .addClass("pinned")
+                .attr("title","Lepas Pin")
+                .html('<i class="fas fa-thumbtack"></i>');
+
+        } else {
+
+            $("body").addClass("sidebar-toggled");
+            $(".sidebar").addClass("toggled");
+
+            $("#btn-pin-sidebar")
+                .removeClass("pinned")
+                .attr("title","Pin Sidebar")
+                .html('<i class="fas fa-bars"></i>');
         }
 
-        // Terapkan status tombol pin
-        if (sidebarPinned) {
-            $("#btn-pin-sidebar").addClass("pinned").attr("title", "Lepas Tahan");
-        }
     }
 
     $(document).ready(function () {
@@ -345,26 +350,61 @@
             sidebarReady = true;
         }, 500);
 
-        $(".sidebar").on("mouseenter", function () {
+        $(".sidebar").mouseenter(function () {
 
             if (!sidebarReady) return;
 
             if (!sidebarPinned) {
+
                 $("body").removeClass("sidebar-toggled");
                 $(".sidebar").removeClass("toggled");
+
             }
+
         });
 
-        $(".sidebar").on("mouseleave", function () {
+        $(".sidebar").mouseleave(function () {
 
             if (!sidebarReady) return;
 
             if (!sidebarPinned) {
+
                 $("body").addClass("sidebar-toggled");
                 $(".sidebar").addClass("toggled");
+
                 $('.sidebar .collapse').collapse('hide');
             }
+
         });
+
+    });
+
+    $("#btn-pin-sidebar").click(function () {
+
+        sidebarPinned = !sidebarPinned;
+
+        if (sidebarPinned) {
+
+            $("body").removeClass("sidebar-toggled");
+            $(".sidebar").removeClass("toggled");
+
+            $(this)
+                .addClass("pinned")
+                .attr("title","Lepas Pin")
+                .html('<i class="fas fa-thumbtack"></i>');
+
+        } else {
+
+            $("body").addClass("sidebar-toggled");
+            $(".sidebar").addClass("toggled");
+
+            $(this)
+                .removeClass("pinned")
+                .attr("title","Pin Sidebar")
+                .html('<i class="fas fa-bars"></i>');
+        }
+
+        localStorage.setItem('sidebarPinned', sidebarPinned);
 
     });
 </script>

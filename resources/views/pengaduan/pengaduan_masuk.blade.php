@@ -33,12 +33,12 @@
         display: flex; justify-content: space-between; align-items: center;
         margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
     }
-    .page-title { font-size: 20px; font-weight: 700; color: var(--text-dark); margin: 0; letter-spacing: -0.02em; }
-    .page-subtitle { font-size: 13px; font-weight: 500; color: var(--text-muted); margin-top: 4px; }
+    .page-title { font-size: 16px; font-weight: 700; color: var(--text-dark); margin: 0; letter-spacing: -0.02em; }
+    .page-subtitle { font-size: 11.5px; font-weight: 500; color: var(--text-muted); margin-top: 4px; }
 
     .filter-bar { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
     .filter-pill {
-        padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 600;
+        padding: 8px 16px; border-radius: 30px; font-size: 11.5px; font-weight: 600;
         border: 1px solid var(--border-light); background: var(--surface); color: var(--text-muted);
         text-decoration: none; transition: var(--transition);
         box-shadow: 0 1px 2px rgba(0,0,0,0.02);
@@ -86,25 +86,25 @@
         .card-actions { border-left: none; border-top: 1px solid var(--border-light); }
     }
 
-    .label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-light); letter-spacing: 0.05em; margin-top: 12px; }
+    .label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; color: var(--text-light); letter-spacing: 0.05em; margin-top: 12px; }
     .label:first-of-type { margin-top: 0; }
-    .value { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-top: 4px; display: flex; align-items: center; gap: 6px; }
-    .desc  { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 4px; background: var(--background); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-light); }
+    .value { font-size: 10.5px; font-weight: 600; color: var(--text-dark); margin-top: 4px; display: flex; align-items: center; gap: 6px; }
+    .desc  { font-size: 11.5px; color: var(--text-muted); line-height: 1.6; margin-top: 4px; background: var(--background); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-light); }
     .desc-tindakan { background: var(--success-soft); border-color: #a7f3d0; color: #065f46; }
 
     .badge-status {
         display: inline-flex; align-items: center; justify-content: center;
-        padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+        padding: 4px 12px; border-radius: 20px; font-size: 10.5px; font-weight: 700;
         letter-spacing: 0.02em;
     }
     .badge-pending  { background: var(--warning-soft); color: #b45309; border: 1px solid #fde68a; }
     .badge-diproses { background: var(--info-soft); color: #1d4ed8; border: 1px solid #bfdbfe; }
     .badge-selesai  { background: var(--success-soft); color: #047857; border: 1px solid #a7f3d0; }
 
-    .form-update label { font-size: 12px; font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 6px; }
+    .form-update label { font-size: 10.5px; font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 6px; }
     .form-update select, .form-update textarea {
         width: 100%; border: 1px solid var(--border-light); border-radius: 8px;
-        padding: 10px 12px; font-size: 13px; color: var(--text-dark);
+        padding: 10px 12px; font-size: 11.5px; color: var(--text-dark);
         background: var(--surface); margin-bottom: 12px;
         transition: var(--transition);
     }
@@ -116,7 +116,7 @@
     .btn-update {
         width: 100%; background: var(--primary); color: #fff;
         border: none; border-radius: 8px; padding: 10px 0;
-        font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition);
+        font-size: 11.5px; font-weight: 600; cursor: pointer; transition: var(--transition);
         display: flex; justify-content: center; align-items: center; gap: 8px;
     }
     .btn-update:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2); }
@@ -129,7 +129,17 @@
     .empty-state i { font-size: 48px; color: var(--border-light); margin-bottom: 16px; }
     .empty-state p { color: var(--text-muted); font-size: 15px; font-weight: 500; }
 
-    .tanggal { font-size: 12px; color: var(--text-muted); margin-top: 16px; display: flex; align-items: center; gap: 6px; }
+    .tanggal { font-size: 10.5px; color: var(--text-muted); margin-top: 16px; display: flex; align-items: center; gap: 6px; }
+
+    /* Animasi Pop Spin untuk Icon Modal Success */
+    @keyframes pop-spin {
+        0% { transform: scale(0.5) rotate(-90deg); opacity: 0; }
+        60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .animate-pop-spin {
+        animation: pop-spin 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
 </style>
 
 <div class="page-header">
@@ -151,17 +161,20 @@
     @endforeach
 </div>
 
-@if($session_sukses = session('sukses'))
-    <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4 border-0 shadow-sm" role="alert" style="background: var(--success-soft); color: #065f46;">
-        <i class="fas fa-check-circle me-2"></i>{{ $session_sukses }}
+{{-- Modal Success (Centang / Hapus) --}}
+<div class="modal fade" id="modalSuccess" tabindex="-1" style="z-index: 1060;">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; text-align: center; padding: 20px;">
+            <div class="modal-body">
+                <div id="successIconContainer" style="width: 64px; height: 64px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i id="successIcon" class="fas fa-check" style="font-size: 32px; color: #16a34a;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Berhasil!</h5>
+                <p id="successMsg" style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Data berhasil disimpan.</p>
+            </div>
+        </div>
     </div>
-@endif
-
-@if($session_error = session('error'))
-    <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4 border-0 shadow-sm" role="alert" style="background: #fee2e2; color: #991b1b;">
-        <i class="fas fa-exclamation-triangle me-2"></i>{{ $session_error }}
-    </div>
-@endif
+</div>
 
 @forelse($pengaduan as $item)
 @php
@@ -247,6 +260,53 @@
 </div>
 
 <script>
+    function showSuccessModal(message, type = 'success') {
+        $('#successMsg').text(message);
+        
+        let iconContainer = $('#successIconContainer');
+        let icon = $('#successIcon');
+        
+        iconContainer.removeClass('animate-pop-spin');
+        void iconContainer[0].offsetWidth; 
+        iconContainer.addClass('animate-pop-spin');
+
+        if(type === 'danger') {
+            iconContainer.css('background', '#fee2e2'); 
+            icon.attr('class', 'fas fa-exclamation-triangle').css('color', '#dc2626'); 
+        } else {
+            iconContainer.css('background', '#dcfce7'); 
+            icon.attr('class', 'fas fa-check').css('color', '#16a34a'); 
+        }
+
+        $('.modal').modal('hide');
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+
+        setTimeout(function() {
+            $('#modalSuccess').modal('show');
+            setTimeout(function() {
+                $('#modalSuccess').modal('hide');
+            }, 1500);
+        }, 100);
+    }
+
+    $('#modalSuccess').on('hidden.bs.modal', function () {
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open').css('padding-right', '');
+    });
+
+    @if(session('sukses'))
+        $(document).ready(function() {
+            showSuccessModal("{{ session('sukses') }}", 'success');
+        });
+    @endif
+
+    @if(session('error'))
+        $(document).ready(function() {
+            showSuccessModal("{{ session('error') }}", 'danger');
+        });
+    @endif
+
     document.querySelectorAll('.status-select').forEach(function(selectElement) {
         selectElement.addEventListener('change', function() {
             let id = this.getAttribute('data-id');

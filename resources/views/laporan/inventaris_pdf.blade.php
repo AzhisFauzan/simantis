@@ -11,17 +11,17 @@
         }
 
         body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 11px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 10px;
             margin: 0;
-            color: #000;
+            color: #1e293b;
             line-height: 1.4;
         }
 
         /* --- KOP SURAT --- */
         .kop-surat {
             width: 100%;
-            margin-bottom: 5px; /* Jarak ke garis bawah */
+            margin-bottom: 8px;
             border-collapse: collapse;
         }
         .kop-surat td {
@@ -30,56 +30,56 @@
             padding: 0;
         }
         .td-logo {
-            width: 20%;
+            width: 18%;
             text-align: center;
-            /* Garis putus-putus dihilangkan sesuai gambar */
         }
         .td-teks {
-            width: 80%;
+            width: 82%;
             text-align: center;
         }
         .logo {
-            width: 100px; /* Sesuaikan dengan kebutuhan aslinya */
+            width: 90px;
         }
 
         /* Tipografi Kop Surat */
         .kop-rsu {
             margin: 0;
-            font-size: 22px;
-            font-weight: bold;
-            letter-spacing: 0px;
-            text-transform: uppercase;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #0f172a;
         }
         .kop-darmayu {
-            margin: -2px 0;
-            font-family: 'Cooper Black', 'Georgia', serif;
-            font-size: 38px;
+            margin: -2px 0 2px 0;
+            font-family: 'Georgia', serif;
+            font-size: 32px;
             font-weight: bold;
-            color: #16a34a; /* Hijau Darmayu */
+            color: #16a34a;
         }
         .kop-madiun {
-            margin: 0 0 5px 0;
-            font-size: 14px;
+            margin: 0 0 6px 0;
+            font-size: 10px;
             font-weight: bold;
-            letter-spacing: 6px;
-            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #475569;
         }
         .kop-alamat {
             margin: 0;
-            font-size: 12px;
+            font-size: 10px;
+            color: #334155;
         }
         .link-email {
-            color: #2563eb; /* Warna biru untuk alamat email */
-            text-decoration: underline;
+            color: #2563eb;
+            text-decoration: none;
         }
 
         /* Garis Bawah Kop Surat Ganda (Resmi) */
         .garis-kop {
-            border-top: 3px solid #000;   /* Garis atas tebal */
-            border-bottom: 1px solid #000; /* Garis bawah tipis */
-            height: 2px;                  /* Jarak antar garis */
+            border-top: 2.5px solid #0f172a;
+            border-bottom: 1px solid #0f172a;
+            height: 2px;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         /* --- JUDUL LAPORAN --- */
@@ -89,19 +89,23 @@
         }
         .judul-laporan h3 {
             margin: 0;
-            font-size: 14px;
+            font-size: 12px;
+            font-weight: 800;
             text-decoration: underline;
+            color: #0f172a;
         }
         .judul-laporan p {
-            margin: 2px 0 0 0;
-            font-weight: bold;
-            font-size: 12px;
+            margin: 4px 0 0 0;
+            font-weight: 600;
+            font-size: 10px;
+            color: #475569;
         }
 
         /* --- INFO CETAK --- */
         .info-cetak {
-            margin-bottom: 10px;
-            font-size: 11px;
+            margin-bottom: 12px;
+            font-size: 10px;
+            color: #334155;
         }
 
         /* --- TABEL DATA --- */
@@ -111,9 +115,9 @@
             margin-bottom: 20px;
         }
         .tabel-data th, .tabel-data td {
-            border: 1px solid #16a34a;
-            padding: 6px 5px;
-            vertical-align: top;
+            border: 1px solid #cbd5e1;
+            padding: 8px 6px;
+            vertical-align: middle;
             word-wrap: break-word;
         }
         .tabel-data th {
@@ -121,24 +125,26 @@
             color: #ffffff;
             font-weight: bold;
             text-align: center;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Kombinasi selang-seling hijau muda dan putih untuk baris tabel */
-        .tabel-data tr:nth-child(even) { background-color: #f0fdf4; }
+        .tabel-data tr:nth-child(even) { background-color: #f8fafc; }
         .tabel-data tr:nth-child(odd) { background-color: #ffffff; }
 
         /* Pengaturan Lebar Kolom */
         .col-no { width: 30px; text-align: center; }
-        .col-kode { width: 110px; }
+        .col-kode { width: 100px; text-align: center; font-weight: 600; }
         .col-kat { width: 80px; text-align: center; }
         .col-ruang { width: 110px; }
-        .col-ip { width: 90px; text-align: center; }
-        .col-spek { width: auto; }
+        .col-ip { width: 90px; text-align: center; font-family: monospace; font-size: 11px; }
+        .col-spek { width: auto; color: #475569; }
 
         /* --- TANDA TANGAN --- */
         .tabel-ttd {
             width: 100%;
-            margin-top: 30px;
+            margin-top: 40px;
             text-align: center;
             page-break-inside: avoid;
         }
@@ -147,6 +153,8 @@
             width: 33.33%;
             padding: 0;
             vertical-align: top;
+            font-size: 10px;
+            color: #1e293b;
         }
         .spasi-ttd {
             height: 70px;
