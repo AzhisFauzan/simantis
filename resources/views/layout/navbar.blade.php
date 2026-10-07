@@ -18,15 +18,33 @@
                 </span>
             </a>
 
-            <div id="alertsDropdownMenu" class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                style="display:none; position:absolute; right:0; top:100%; width: 280px; max-height: 400px; overflow-y: auto;">
-                <h6 class="dropdown-header d-flex justify-content-between align-items-center" style="background-color: #f8f9fa; border-bottom: 1px solid #ddd; padding: 10px 15px; margin-top: 0;">
-                    <span style="font-weight:bold;color:#333;">Pusat Notifikasi <span id="notifCount">0</span></span>
-                    <a href="#" id="clearNotifBtn" style="font-size: 0.75rem; color: #ef4444; text-decoration: none;">
-                        <i class="fas fa-trash-alt"></i> Bersihkan
-                    </a>
-                </h6>
-                <div id="notifListContainer">
+<div id="alertsDropdownMenu" class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                style="display:none; position:absolute; right:0; top:100%; width: 320px; max-height: 450px; overflow:hidden; border-radius: 12px; border: none; padding: 0;">
+
+                {{-- Header --}}
+                <div style="background: linear-gradient(135deg, #6b21a8, #7c3aed); padding: 14px 16px 10px; border-radius: 12px 12px 0 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight:700; color:#fff; font-size: 13px; letter-spacing: 0.3px;">
+                            <i class="fas fa-bell" style="margin-right: 5px;"></i> Pusat Notifikasi
+                        </span>
+                        <a href="#" id="clearNotifBtn" style="font-size: 11px; color: #fca5a5; text-decoration: none; font-weight: 600;">
+                            <i class="fas fa-trash-alt"></i> Bersihkan
+                        </a>
+                    </div>
+
+                    {{-- Tab Filter --}}
+                    <div style="display: flex; gap: 6px;">
+                        <button class="notif-tab active" data-tab="belum" style="flex:1; padding: 6px 0; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all .2s; background: rgba(255,255,255,.95); color: #6b21a8;">
+                            Belum Ditindak <span id="countBelum" style="background: #dc2626; color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 10px; margin-left: 3px;">0</span>
+                        </button>
+                        <button class="notif-tab" data-tab="sudah" style="flex:1; padding: 6px 0; border: none; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all .2s; background: rgba(255,255,255,.2); color: rgba(255,255,255,.8);">
+                            Sudah Ditindak <span id="countSudah" style="background: #dc2626; color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 10px; margin-left: 3px;">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Notification List --}}
+                <div id="notifListContainer" style="max-height: 340px; overflow-y: auto;">
                     <p class="text-center small text-muted py-3 m-0">Memuat notifikasi...</p>
                 </div>
             </div>
@@ -92,35 +110,102 @@
 
 
 <div class="modal fade" id="modalTerimaNotif" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Terima Pengaduan</h5>
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            <div class="modal-body text-center" style="padding: 24px;">
+                <div style="width: 56px; height: 56px; background: #eff6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                    <i class="fas fa-inbox" style="font-size: 24px; color: #3b82f6;"></i>
+                </div>
+                <h5 style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Terima Pengaduan</h5>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Apakah Anda ingin terima pengaduan ini ke Maintenance?</p>
+                
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                    <button class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; background: #f1f5f9; color: #475569; border: none;">Batal</button>
+                    <button class="btn btn-primary" id="btnTerimaNotif" style="border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; background: #3b82f6; border: none; color: #fff;">Terima</button>
+                </div>
             </div>
-
-            <div class="modal-body">
-                <p>Apakah Anda ingin terima pengaduan ini ke Maintenance?</p>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button class="btn btn-success" id="btnTerimaNotif">
-                    Terima
-                </button>
-            </div>
-
         </div>
     </div>
 </div>
 
+<style>
+    /* Notif dropdown scrollbar */
+    #notifListContainer::-webkit-scrollbar { width: 4px; }
+    #notifListContainer::-webkit-scrollbar-track { background: transparent; }
+    #notifListContainer::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 4px; }
+
+    .notif-item {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f1f5f9;
+        position: relative;
+        transition: background .15s;
+    }
+    .notif-item:hover { background: #f8fafc; }
+    .notif-item:last-child { border-bottom: none; }
+
+    .notif-item .notif-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 2px;
+    }
+    .notif-item .notif-message {
+        font-size: 11.5px;
+        color: #64748b;
+        line-height: 1.4;
+    }
+    .notif-item .notif-time {
+        font-size: 10px;
+        color: #94a3b8;
+        font-weight: 600;
+    }
+    .notif-item .notif-status-badge {
+        display: inline-block;
+        font-size: 9.5px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 10px;
+        letter-spacing: 0.3px;
+    }
+    .notif-status-badge.diterima { background: #dbeafe; color: #2563eb; }
+    .notif-status-badge.diproses { background: #fef3c7; color: #d97706; }
+    .notif-status-badge.selesai  { background: #dcfce7; color: #16a34a; }
+    .notif-status-badge.pending  { background: #f1f5f9; color: #64748b; }
+
+    .btn-delete-notif-new {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        background: none;
+        border: none;
+        color: #cbd5e1;
+        cursor: pointer;
+        font-size: 11px;
+        padding: 4px;
+        border-radius: 4px;
+        transition: all .15s;
+    }
+    .btn-delete-notif-new:hover { color: #ef4444; background: #fef2f2; }
+
+    .notif-empty {
+        text-align: center;
+        padding: 30px 16px;
+        color: #94a3b8;
+    }
+    .notif-empty i { font-size: 28px; margin-bottom: 8px; display: block; color: #d4d4d8; }
+    .notif-empty span { font-size: 12px; font-weight: 500; }
+</style>
+
 <script>
     let localNotifState = [];
+    let belumDitindakState = [];
+    let sudahDitindakState = [];
     let unreadCountState = 0;
     let lastUnreadCount = 0;
     let isMutating = false;
     let selectedPengaduanId = null;
-     const isDashboard = window.location.pathname === '/dashboard';
+    let activeTab = 'belum';
+    const isDashboard = window.location.pathname === '/dashboard';
 
     $(document).on('click', '.notif-link', function(e) {
         e.preventDefault();
@@ -138,55 +223,99 @@
         window.location.href = `/maintenance/terima/${selectedPengaduanId}`;
     });
 
+    // Tab switching
+    $(document).on('click', '.notif-tab', function() {
+        activeTab = $(this).data('tab');
+
+        // Update tab visual
+        $('.notif-tab').each(function() {
+            $(this).css({
+                'background': 'rgba(255,255,255,.2)',
+                'color': 'rgba(255,255,255,.8)'
+            });
+            $(this).removeClass('active');
+        });
+        $(this).css({
+            'background': 'rgba(255,255,255,.95)',
+            'color': '#6b21a8'
+        });
+        $(this).addClass('active');
+
+        renderNotifikasi();
+    });
+
+    function getStatusBadgeClass(status) {
+        if (!status) return 'pending';
+        switch(status) {
+            case 'Diterima': return 'diterima';
+            case 'Diproses': return 'diproses';
+            case 'Selesai':  return 'selesai';
+            default:         return 'pending';
+        }
+    }
+
     function renderNotifikasi() {
         let container = document.getElementById('notifListContainer');
         container.innerHTML = '';
 
-        if (localNotifState.length === 0) {
-            container.innerHTML =
-                '<p class="text-center small text-muted py-3 m-0">Tidak ada notifikasi.</p>';
+        let items = activeTab === 'belum' ? belumDitindakState : sudahDitindakState;
+
+        if (items.length === 0) {
+            let emptyIcon = activeTab === 'belum' ? 'fa-inbox' : 'fa-check-circle';
+            let emptyText = activeTab === 'belum' ? 'Tidak ada notifikasi baru' : 'Belum ada yang ditindak';
+            container.innerHTML = `
+                <div class="notif-empty">
+                    <i class="fas ${emptyIcon}"></i>
+                    <span>${emptyText}</span>
+                </div>
+            `;
             return;
         }
 
-        localNotifState.forEach(item => {
-
+        items.forEach(item => {
             const tanggal = new Date(item.created_at);
             const jam = tanggal.getHours().toString().padStart(2, '0');
             const menit = tanggal.getMinutes().toString().padStart(2, '0');
+            const hari = tanggal.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
 
-            container.innerHTML += `
-                <div class="dropdown-item"
-                    style="padding:10px 15px;border-bottom:1px solid #eee;position:relative;">
+            if (activeTab === 'belum') {
+                // Belum ditindak — clickable to accept
+                container.innerHTML += `
+                    <div class="notif-item" data-id="${item.id}">
+                        <button class="btn-delete-notif-new btn-delete-notif" data-id="${item.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <a href="#" class="notif-link" data-id="${item.id}" data-pengaduan="${item.id_pengaduan}"
+                           style="text-decoration:none; color:inherit; display:block; padding-right: 20px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 3px;">
+                                <span class="notif-title">${item.judul}</span>
+                                <span class="notif-time">${hari} ${jam}:${menit}</span>
+                            </div>
+                            <div class="notif-message">${item.pesan}</div>
+                        </a>
+                    </div>
+                `;
+            } else {
+                // Sudah ditindak — show status badge, no action
+                let statusLabel = item.status_pengaduan || 'Pending';
+                let badgeClass = getStatusBadgeClass(item.status_pengaduan);
 
-                    <a href="#"
-                    class="notif-link"
-                    data-id="${item.id}"
-                    data-pengaduan="${item.id_pengaduan}"
-                    style="display:block;text-decoration:none;color:inherit;padding-right:25px;">
-
-                        <span style="font-size:0.80rem;font-weight:600;">
-                            ${item.judul}
-                        </span>
-
-                        <span style="font-size:0.70rem;font-weight:600;float:right;">
-                            ${jam}:${menit}
-                        </span>
-
-                        <br>
-
-                        <span style="font-size:0.75rem;">
-                            ${item.pesan}
-                        </span>
-                    </a>
-
-                    <button class="btn-delete-notif"
-                            data-id="${item.id}"
-                            style="position:absolute;right:5px;top:8px;background:none;border:none;color:red;">
-                        <i class="fas fa-times"></i>
-                    </button>
-
-                </div>
-            `;
+                container.innerHTML += `
+                    <div class="notif-item" data-id="${item.id}">
+                        <button class="btn-delete-notif-new btn-delete-notif" data-id="${item.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div style="padding-right: 20px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 3px;">
+                                <span class="notif-title">${item.judul}</span>
+                                <span class="notif-time">${hari} ${jam}:${menit}</span>
+                            </div>
+                            <div class="notif-message" style="margin-bottom: 4px;">${item.pesan}</div>
+                            <span class="notif-status-badge ${badgeClass}">${statusLabel}</span>
+                        </div>
+                    </div>
+                `;
+            }
         });
     }
 
@@ -206,10 +335,15 @@
 
             lastUnreadCount = data.unread;
             localNotifState = data.notif;
+            belumDitindakState = data.belum_ditindak;
+            sudahDitindakState = data.sudah_ditindak;
             unreadCountState = data.unread;
 
             let badge = document.getElementById('notifBadge');
-            let countSpan = document.getElementById('notifCount');
+
+            // Update badge counts on tabs
+            document.getElementById('countBelum').innerText = belumDitindakState.length;
+            document.getElementById('countSudah').innerText = sudahDitindakState.length;
 
             if (isDashboard && unreadCountState > 0) {
                 badge.style.display = 'flex';
@@ -217,8 +351,6 @@
             } else {
                 badge.style.display = 'none';
             }
-
-            countSpan.innerText = unreadCountState;
 
             renderNotifikasi();
         })
@@ -249,6 +381,7 @@
                 headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' }
             }).then(() => {
                 unreadCountState = 0;
+                badge.style.display = 'none';
                 renderNotifikasi();
             });
         }
@@ -270,6 +403,12 @@
             let id = btnDelete.getAttribute('data-id');
 
             localNotifState = localNotifState.filter(item => item.id.toString() !== id);
+            belumDitindakState = belumDitindakState.filter(item => item.id.toString() !== id);
+            sudahDitindakState = sudahDitindakState.filter(item => item.id.toString() !== id);
+
+            document.getElementById('countBelum').innerText = belumDitindakState.length;
+            document.getElementById('countSudah').innerText = sudahDitindakState.length;
+
             renderNotifikasi();
 
             fetch('/notifikasi/hapus', {
@@ -292,7 +431,13 @@
 
         isMutating = true;
         localNotifState = [];
+        belumDitindakState = [];
+        sudahDitindakState = [];
         unreadCountState = 0;
+
+        document.getElementById('countBelum').innerText = 0;
+        document.getElementById('countSudah').innerText = 0;
+
         renderNotifikasi();
 
         fetch('/notifikasi/bersihkan', {

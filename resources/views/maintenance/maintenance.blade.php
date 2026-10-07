@@ -396,6 +396,15 @@
                 <option value="{{ $kat->id_kategori }}">{{ $namaKategori }}</option>
             @endforeach
         </select>
+
+        <span class="toolbar-label" style="margin-left: 10px;">Status:</span>
+        <select id="filterStatusDropdown" class="select-kategori">
+            <option value="all">Semua Status</option>
+            <option value="diterima">Diterima</option>
+            <option value="pending">Pending</option>
+            <option value="diproses">Diproses</option>
+            <option value="selesai">Selesai</option>
+        </select>
     </div>
 
     <div class="result-info" id="resultInfo">
@@ -425,13 +434,16 @@
                 ->unique()
                 ->implode(', ');
 
-                $statuses = $itemsRuangan->pluck('status_pengaduan')->map(fn($s) => strtolower($s))->unique();
+                $statusesArr = $itemsRuangan->pluck('status_pengaduan')->filter()->map(fn($s) => strtolower($s))->unique();
+                if($statusesArr->isEmpty()) $statusesArr = collect(['selesai']);
+                $statusesStr = $statusesArr->implode(',');
             @endphp
 
             <div class="maintenance-card"
                 data-kategori="{{ $item->id_kategori }}"
                 data-ruangan="{{ $item->id_ruangan }}"
-                data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}">
+                data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}"
+                data-statuses="{{ $statusesStr }}">
 
                 <input type="checkbox"
                     class="card-checkbox maintenance-check"
@@ -454,7 +466,7 @@
                     {{ $teknisi ?: '-' }}
                 </div>
 
-                <div class="mcard-status-container"  style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+                <div class="mcard-status-container" style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px; flex:1;">
                     @if($itemsRuangan->whereNotNull('id_pengaduan_masuk')->count() > 0)
                         @foreach($itemsRuangan as $x)
                             @php
@@ -498,10 +510,14 @@
 
                                         <div class="mt-2">
                                             <button type="button"
-                                                class="btn btn-sm btn-primary btn-pending-maintenance"
+                                                class="btn-pending-maintenance"
+                                                style="background: #eff6ff; color: #3b82f6; border: 1px solid #bfdbfe; border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; transition: all 0.2s; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
+                                                onmouseover="this.style.background='#dbeafe'"
+                                                onmouseout="this.style.background='#eff6ff'"
                                                 data-id="{{ $x->id_pengaduan_masuk }}"
-                                                data-kategori="{{ $x->id_kategori }}">
-                                                Update
+                                                data-kategori="{{ $x->id_kategori }}"
+                                                data-kategori-name="{{ $label }}">
+                                                <i class="fas fa-edit" style="margin-right: 4px;"></i> Update
                                             </button>
                                         </div>
 
@@ -509,11 +525,15 @@
 
                                         <div class="mt-2">
                                             <button type="button"
-                                                class="btn btn-sm btn-primary btn-diterima-maintenance"
+                                                class="btn-diterima-maintenance"
+                                                style="background: #eff6ff; color: #3b82f6; border: 1px solid #bfdbfe; border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; transition: all 0.2s; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
+                                                onmouseover="this.style.background='#dbeafe'"
+                                                onmouseout="this.style.background='#eff6ff'"
                                                 data-id="{{ $x->id_pengaduan_masuk }}"
                                                 data-kategori="{{ $x->id_kategori }}"
+                                                data-kategori-name="{{ $label }}"
                                                 data-status="diterima">
-                                                Update
+                                                <i class="fas fa-edit" style="margin-right: 4px;"></i> Update
                                             </button>
                                         </div>
 
@@ -521,11 +541,15 @@
 
                                         <div class="mt-2">
                                             <button type="button"
-                                                class="btn btn-sm btn-success btn-selesai-maintenance"
+                                                class="btn-selesai-maintenance"
+                                                style="background: #ecfdf5; color: #10b981; border: 1px solid #a7f3d0; border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; transition: all 0.2s; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
+                                                onmouseover="this.style.background='#d1fae5'"
+                                                onmouseout="this.style.background='#ecfdf5'"
                                                 data-id="{{ $x->id_pengaduan_masuk }}"
                                                 data-kategori="{{ $x->id_kategori }}"
+                                                data-kategori-name="{{ $label }}"
                                                 data-status="Selesai">
-                                                Selesai
+                                                <i class="fas fa-check" style="margin-right: 4px;"></i> Selesai
                                             </button>
                                         </div>
                                     @endif
@@ -538,7 +562,7 @@
                 </div>
 
                 <button type="button"
-                    class="btn btn-sm btn-outline-info btn-detail mt-1"
+                    class="btn-detail-card btn-detail"
                     data-id="{{ $item->id_maintenance }}">
                     <i class="fas fa-eye"></i> Detail
                 </button>
@@ -564,35 +588,7 @@
                     <div id="alertError" class="alert alert-danger d-none"></div>
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label class="form-label-sm">
-                                Kategori Perangkat
-                                <span style="font-weight:400;text-transform:none;font-size:11px;color:#9ca3af">(bisa pilih lebih dari satu)</span>
-                            </label>
-                            <input type="text" id="searchPerangkat" class="form-control-sm-custom mb-2" placeholder="Cari nama kategori...">
-                            <div id="listPerangkat" style="max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--slate);">
-                                @foreach($kategoriPerangkat as $namaKategori => $items)
-                                <div class="kategori-group mb-1" data-nama="{{ strtolower($namaKategori) }}">
-                                    @foreach($items as $kat)
-                                    <div class="form-check perangkat-item" style="margin-bottom:4px;">
-                                        <input class="form-check-input" type="checkbox" name="id_kategori[]" value="{{ $kat->id_kategori }}" id="kat_{{ $kat->id_kategori }}" style="accent-color:var(--rs-purple)">
-                                        <label class="form-check-label" for="kat_{{ $kat->id_kategori }}" style="font-size:13px;color:var(--text-main); font-weight:600;">{{ $namaKategori }}</label>
-                                    </div>
-                                    @endforeach
-                                </div>
-                                @endforeach
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <small style="color:var(--rs-purple);font-size:11px;font-weight:700;" id="countPilihan">0 kategori dipilih</small>
-                                <small>
-                                    <a href="#" id="pilihSemua" style="color:var(--rs-purple);font-size:11px;font-weight:700;">Pilih Semua</a>
-                                    <span style="color:var(--border);margin:0 4px">|</span>
-                                    <a href="#" id="hapusSemua" style="color:#ef4444;font-size:11px;font-weight:700;">Hapus Semua</a>
-                                </small>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-12 form-group" style="padding:0;">
                                 <label class="form-label-sm">Ruangan</label>
                                 <!-- Search Ruangan -->
                                 <input type="text" id="searchRuanganModal" class="form-control-sm-custom mb-2" placeholder="Cari nama ruangan...">
@@ -609,6 +605,39 @@
                                     </div>
                                     @endforeach
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 form-group" id="kategori-container" style="position: relative;">
+                            <label class="form-label-sm">
+                                Kategori Perangkat
+                                <span style="font-weight:400;text-transform:none;font-size:11px;color:#9ca3af">(bisa pilih lebih dari satu)</span>
+                            </label>
+                            
+                            <div id="kategori-overlay" style="position: absolute; top: 30px; left: 15px; right: 15px; bottom: 0; background: rgba(255,255,255,0.85); z-index: 10; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                <span style="font-size: 13px; font-weight: 600; color: #64748b;">Pilih ruangan terlebih dahulu</span>
+                            </div>
+
+                            <input type="text" id="searchPerangkat" class="form-control-sm-custom mb-2" placeholder="Cari nama kategori...">
+                            <div id="listPerangkat" style="max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--slate);">
+                                @foreach($kategoriPerangkat as $namaKategori => $items)
+                                <div class="kategori-group mb-1" data-nama="{{ strtolower($namaKategori) }}">
+                                    @foreach($items as $kat)
+                                    <div class="form-check perangkat-item" style="margin-bottom:4px;" data-kategori-id="{{ $kat->id_kategori }}">
+                                        <input class="form-check-input check-perangkat" type="checkbox" name="id_kategori[]" value="{{ $kat->id_kategori }}" id="kat_{{ $kat->id_kategori }}" style="accent-color:var(--rs-purple)">
+                                        <label class="form-check-label" for="kat_{{ $kat->id_kategori }}" style="font-size:13px;color:var(--text-main); font-weight:600; cursor:pointer;">{{ $namaKategori }}</label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small style="color:var(--rs-purple);font-size:11px;font-weight:700;" id="countPilihan">0 kategori dipilih</small>
+                                <small>
+                                    <a href="#" id="pilihSemua" style="color:var(--rs-purple);font-size:11px;font-weight:700;">Pilih Semua</a>
+                                    <span style="color:var(--border);margin:0 4px">|</span>
+                                    <a href="#" id="hapusSemua" style="color:#ef4444;font-size:11px;font-weight:700;">Hapus Semua</a>
+                                </small>
                             </div>
                         </div>
 
@@ -646,86 +675,126 @@
     </div>
 </div>
 
-{{-- Modal Detail --}}
 <div class="modal fade" id="modalDetail" tabindex="-1">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="mhead purple">
-                <h5 class="modal-title">Informasi Maintenance</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+        <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            <div class="mhead purple" style="padding: 18px 24px; border-radius: 16px 16px 0 0;">
+                <h5 class="modal-title" style="font-size: 16px; font-weight: 700;">Informasi Maintenance</h5>
+                <button type="button" class="close" data-dismiss="modal" style="outline: none;"><span>&times;</span></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 24px;">
                 <div id="detail-loading" class="text-center py-4">
                     <div class="spinner-border" style="color:var(--rs-purple); width:24px;height:24px;" role="status"></div>
                 </div>
                 <div id="detail-content" style="display:none;">
-                    <div class="detail-list">
-                        <div class="detail-item"><div class="detail-label">Ruangan</div><div class="detail-value" id="d-ruangan">-</div></div>
-                        <div class="detail-item"><div class="detail-label">Tanggal</div><div class="detail-value" id="d-tanggal">-</div></div>
-                        <div class="detail-item"><div class="detail-label">Teknisi</div><div class="detail-value" id="d-teknisi">-</div></div>
-                        <div class="detail-item">
-                            <div class="detail-label">Kategori</div>
-                            <div class="detail-value" id="d-kategori">-</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Ruangan</div>
+                            <div id="d-ruangan" style="font-size: 14px; font-weight: 700; color: #0f172a;">-</div>
                         </div>
-
-                        <div class="detail-item">
-                            <div class="detail-label">Status</div>
-                            <div class="detail-value" id="d-status">-</div>
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Tanggal</div>
+                            <div id="d-tanggal" style="font-size: 13px; font-weight: 600; color: #334155;">-</div>
                         </div>
-
-                        <div class="detail-item" style="background:transparent; border:none; padding:0;">
-                            <div class="detail-label">Deskripsi Maintenance</div>
-                            <div class="detail-value-desc" id="d-deskripsi">-</div>
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Teknisi</div>
+                            <div id="d-teknisi" style="font-size: 13px; font-weight: 600; color: #334155;">-</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Kategori</div>
+                            <div id="d-kategori" style="font-size: 13px; font-weight: 600; color: #334155;">-</div>
                         </div>
                     </div>
+
+                    <div style="margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px dashed #cbd5e1;">
+                        <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Status</div>
+                        <div id="d-status">-</div>
+                    </div>
+
+                    <div>
+                        <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Deskripsi Maintenance</div>
+                        <div id="d-deskripsi" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; font-size: 13px; font-weight: 500; color: #334155; line-height: 1.5; min-height: 60px;">-</div>
+                    </div>
+
                 </div>
             </div>
-            <div class="modal-footer d-flex justify-content-end">
-                <button type="button" class="btn-tutup-detail" data-dismiss="modal">Tutup</button>
+            <div class="modal-footer" style="padding: 0 24px 24px; border-top: none; display: flex; justify-content: flex-end; background: #fff;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px; padding: 8px 20px; font-size: 13px; font-weight: 600; background: #f1f5f9; color: #475569; border: none; outline: none; cursor: pointer; transition: 0.2s;">Tutup</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="modalFormTindakan" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+        <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
 
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">
-                    Selesaikan Maintenance
+            <div class="modal-header" style="border-bottom: 1px solid #f1f5f9; padding: 20px 24px 16px;">
+                <h5 class="modal-title" style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0;">
+                    Update Status Pengaduan
                 </h5>
+                <button type="button" class="close" data-dismiss="modal" style="outline: none; padding: 0; margin: 0;">
+                    <span aria-hidden="true" style="font-size: 24px; color: #94a3b8; line-height: 1;">&times;</span>
+                </button>
             </div>
 
-            <div class="modal-body">
+            <form id="formTindakan">
+                <div class="modal-body" style="padding: 24px;">
 
-                <form id="formTindakan">
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            <label>Status Pengaduan</label>
-                            <select id="inputStatus" class="form-control" required>
-                                <option value="" disabled selected>Pilih Status...</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Diproses">Diproses</option>
-                                <option value="Selesai">Selesai</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Deskripsi Tindakan</label>
-                            <textarea id="inputDeskripsiTindakan" class="form-control" rows="4" required></textarea>
-                        </div>
-
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; display: block;">Status Pengaduan</label>
+                        <select id="inputStatus" class="form-control" style="border-radius: 8px; font-size: 13px; font-weight: 500; border: 1px solid #cbd5e1; background: #fff; padding: 10px 14px; height: auto; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" required>
+                            <option value="" disabled selected>Pilih Status...</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Selesai">Selesai</option>
+                        </select>
                     </div>
 
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" id="btn-selesai-pengaduan">
-                            Simpan & Selesai
-                        </button>
+                    {{-- Section PENDING: Jadwal Proses --}}
+                    <div id="section-pending" style="display:none; margin-bottom: 20px;">
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; display: block;">
+                            <i class="far fa-calendar-alt" style="margin-right:4px;"></i> Jadwal Mulai Proses
+                        </label>
+                        <div class="d-flex" style="gap:10px;">
+                            <input type="date" id="inputJadwalTanggal" class="form-control" style="border-radius: 8px; font-size: 13px; font-weight: 500; border: 1px solid #cbd5e1; background: #fff; padding: 10px 14px; height: auto; flex:1; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <input type="time" id="inputJadwalJam" class="form-control" style="border-radius: 8px; font-size: 13px; font-weight: 500; border: 1px solid #cbd5e1; background: #fff; padding: 10px 14px; height: auto; flex:1; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                        </div>
+                        <small style="color:#64748b; font-size:11px; margin-top:8px; display:block;">Tentukan kapan pengaduan ini akan mulai diproses.</small>
                     </div>
-                </form>
-            </div>
+
+                    {{-- Section DIPROSES: Info saja --}}
+                    <div id="section-diproses" style="display:none; margin-bottom: 20px;">
+                        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:16px; display:flex; align-items:center; gap:12px;">
+                            <div style="width: 36px; height: 36px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-tools" style="color:#2563eb; font-size:16px;"></i>
+                            </div>
+                            <p style="margin:0; font-size:13px; font-weight:500; color:#1e40af; line-height:1.4;">Pengaduan ini akan dipindahkan ke status <b>Diproses</b>.</p>
+                        </div>
+                    </div>
+
+                    {{-- Section SELESAI: Quick Tags --}}
+                    <div id="section-selesai" style="display:none; margin-bottom: 20px;">
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; display: block;">
+                            <i class="fas fa-wrench" style="margin-right:4px;"></i> Kerusakan yang Ditangani
+                        </label>
+                        <div id="tindakanTagsContainer" style="display:flex; flex-wrap:wrap; gap:6px; border:1px solid #cbd5e1; border-radius:8px; padding:12px; background:#f8fafc; min-height:56px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <p id="tindakanTagsPlaceholder" style="color:#94a3b8; font-size:12px; margin:0;">Pilih status Selesai untuk melihat opsi.</p>
+                        </div>
+                        <input type="hidden" id="inputDeskripsiTindakan">
+                        <small id="tindakanSelectedInfo" style="color:var(--rs-purple); font-size:11px; font-weight:700; margin-top:6px; display:block;">0 dipilih</small>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer" style="border-top: none; padding: 0 24px 24px; display: flex; gap: 8px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; background: #f1f5f9; color: #475569; border: none;">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="btn-selesai-pengaduan" style="border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; background: #3b82f6; border: none; color: #fff; box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);">
+                        Simpan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -805,11 +874,38 @@
         let status = $('#inputStatus').val();
         let btnSubmit = $('#btn-selesai-pengaduan');
 
+        // Hide all sections
+        $('#section-pending, #section-diproses, #section-selesai').hide();
+
         if (status === 'Selesai') {
             btnSubmit
                 .removeClass('btn-warning btn-primary')
                 .addClass('btn-success')
                 .html('<i class="fas fa-check-circle"></i> Tuntas');
+            
+            $('#section-selesai').show();
+            renderTindakanTags();
+        } else if (status === 'Diproses') {
+            btnSubmit
+                .removeClass('btn-success btn-primary')
+                .addClass('btn-primary')
+                .html('<i class="fas fa-save"></i> Simpan');
+            
+            $('#section-diproses').show();
+        } else if (status === 'Pending') {
+            btnSubmit
+                .removeClass('btn-success btn-primary')
+                .addClass('btn-primary')
+                .html('<i class="fas fa-save"></i> Simpan');
+            
+            $('#section-pending').show();
+            // Set default jadwal ke besok
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            if (!$('#inputJadwalTanggal').val()) {
+                $('#inputJadwalTanggal').val(fmtDate(tomorrow));
+                $('#inputJadwalJam').val('08:00');
+            }
         } else {
             btnSubmit
                 .removeClass('btn-success btn-primary')
@@ -817,9 +913,56 @@
                 .html('<i class="fas fa-save"></i> Simpan');
         }
     }
+
+    // Render Quick Tags untuk status Selesai
+    function renderTindakanTags() {
+        var container = $('#tindakanTagsContainer');
+        container.empty();
+        
+        var kategoriName = $('#btn-selesai-pengaduan').data('kategori-name') || '';
+        var tags = quickTagsMap[kategoriName] || quickTagsMap['default'];
+        
+        tags.forEach(function(tag) {
+            var chip = $('<span class="tindakan-tag-chip" style="display:inline-block; padding:6px 14px; background:#e2e8f0; color:#475569; font-size:12px; font-weight:600; border-radius:20px; cursor:pointer; border:2px solid transparent; transition:0.2s; user-select:none;">' + tag + '</span>');
+            
+            chip.on('click', function() {
+                $(this).toggleClass('active');
+                if ($(this).hasClass('active')) {
+                    $(this).css({ background: '#dcfce7', color: '#166534', borderColor: '#22c55e' });
+                } else {
+                    $(this).css({ background: '#e2e8f0', color: '#475569', borderColor: 'transparent' });
+                }
+                updateTindakanHidden();
+            });
+            
+            chip.on('mouseenter', function() {
+                if (!$(this).hasClass('active')) {
+                    $(this).css({ background: '#cbd5e1' });
+                }
+            }).on('mouseleave', function() {
+                if (!$(this).hasClass('active')) {
+                    $(this).css({ background: '#e2e8f0' });
+                }
+            });
+            
+            container.append(chip);
+        });
+    }
+
+    function updateTindakanHidden() {
+        var selected = [];
+        $('.tindakan-tag-chip.active').each(function() {
+            selected.push($(this).text());
+        });
+        $('#inputDeskripsiTindakan').val(selected.join(', '));
+        $('#tindakanSelectedInfo').text(selected.length + ' dipilih');
+    }
+
+    $('#inputStatus').on('change', syncStatusUI);
     $(document).on('click', '.btn-diterima-maintenance', function () {
         let id = $(this).data('id');
         let kategori = $(this).data('kategori');
+        let kategoriName = $(this).data('kategori-name') || '';
 
         $('#inputStatus').html(`
             <option value="Pending">Pending</option>
@@ -829,8 +972,8 @@
 
         $('#inputStatus').val('Pending');
 
-        $('#btn-selesai-pengaduan').data('id', id).data('kategori', kategori);
-
+        $('#btn-selesai-pengaduan').data('id', id).data('kategori', kategori).data('kategori-name', kategoriName);
+        resetTindakanFields();
         syncStatusUI();
 
         $('#modalFormTindakan').modal('show');
@@ -839,6 +982,7 @@
     $(document).on('click', '.btn-pending-maintenance', function () {
         let id = $(this).data('id');
         let kategori = $(this).data('kategori');
+        let kategoriName = $(this).data('kategori-name') || '';
 
         $('#inputStatus').html(`
             <option value="Diproses">Diproses</option>
@@ -847,8 +991,8 @@
 
         $('#inputStatus').val('Diproses');
 
-        $('#btn-selesai-pengaduan').data('id', id).data('kategori', kategori);
-
+        $('#btn-selesai-pengaduan').data('id', id).data('kategori', kategori).data('kategori-name', kategoriName);
+        resetTindakanFields();
         syncStatusUI();
 
         $('#modalFormTindakan').modal('show');
@@ -857,6 +1001,7 @@
     $(document).on('click', '.btn-selesai-maintenance', function () {
         let id = $(this).data('id');
         let kategori = $(this).data('kategori');
+        let kategoriName = $(this).data('kategori-name') || '';
 
         $('#inputStatus').html(`
             <option value="Selesai">Selesai</option>
@@ -866,19 +1011,27 @@
 
         $('#btn-selesai-pengaduan')
             .data('id', id)
-            .data('kategori', kategori);
-
+            .data('kategori', kategori)
+            .data('kategori-name', kategoriName);
+        resetTindakanFields();
         syncStatusUI();
 
         $('#modalFormTindakan').modal('show');
     });
+
+    function resetTindakanFields() {
+        $('#inputJadwalTanggal').val('');
+        $('#inputJadwalJam').val('');
+        $('#inputDeskripsiTindakan').val('');
+        $('#tindakanTagsContainer').empty();
+        $('#tindakanSelectedInfo').text('0 dipilih');
+    }
 
     $('#formTindakan').on('submit', function (e) {
         e.preventDefault();
         let id = $('#btn-selesai-pengaduan').data('id');
         let kategori = $('#btn-selesai-pengaduan').data('kategori');
         let status = $('#inputStatus').val();
-        let deskripsi = $('#inputDeskripsiTindakan').val();
 
         if (!id || !kategori) {
             alert('Gagal: ID Pengaduan atau ID Kategori tidak valid! Aksi ditolak.');
@@ -890,10 +1043,35 @@
             return;
         }
 
-        //  if (status === 'Selesai' && !deskripsi) {
-        //     alert('Deskripsi wajib diisi untuk status Selesai!');
-        //     return;
-        // }
+        let bodyData = {
+            status: status,
+            id_kategori: kategori
+        };
+
+        // Pending: kirim jadwal_proses
+        if (status === 'Pending') {
+            let tgl = $('#inputJadwalTanggal').val();
+            let jam = $('#inputJadwalJam').val();
+            if (!tgl || !jam) {
+                alert('Jadwal tanggal dan jam wajib diisi untuk status Pending!');
+                return;
+            }
+            bodyData.jadwal_proses = tgl + ' ' + jam + ':00';
+            bodyData.deskripsi_tindakan = null;
+        }
+        // Diproses: tidak kirim deskripsi
+        else if (status === 'Diproses') {
+            bodyData.deskripsi_tindakan = null;
+        }
+        // Selesai: kirim deskripsi dari Quick Tags
+        else if (status === 'Selesai') {
+            let deskripsi = $('#inputDeskripsiTindakan').val();
+            if (!deskripsi) {
+                alert('Pilih minimal satu kerusakan yang ditangani!');
+                return;
+            }
+            bodyData.deskripsi_tindakan = deskripsi;
+        }
 
         fetch(`/maintenance/selesaikan-pengaduan/${id}`, {
             method: 'POST',
@@ -902,11 +1080,7 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({
-                status: status,
-                deskripsi_tindakan: status === 'Pending' ? null : deskripsi,
-                id_kategori: kategori
-            })
+            body: JSON.stringify(bodyData)
         })
         .then(res => res.json())
         .then(data => {
@@ -934,13 +1108,17 @@
     }
     function resetDateFilter() { $('#filterDateFrom').val(''); $('#filterDateTo').val(''); $('.quick-pill').removeClass('active'); $('#pill-all').addClass('active'); applyAllFilters(); }
     $('#filterDateFrom, #filterDateTo').on('change', function () { $('.quick-pill').removeClass('active'); applyAllFilters(); });
-    $('#filterKategoriDropdown').on('change', applyAllFilters);
+    $('#filterKategoriDropdown, #filterStatusDropdown').on('change', applyAllFilters);
 
     var mappingKategori = {};
     $.ajax({ url: "{{ url('maintenance/kategori-ruangan') }}", method: 'GET', success: function (data) { mappingKategori = data; } });
 
+    var mappingRuanganKategori = {!! json_encode($mappingRuanganKategori) !!};
+
+
     function applyAllFilters() {
         var kategori = $('#filterKategoriDropdown').val();
+        var statusFilter = $('#filterStatusDropdown').val();
         var dateFrom = $('#filterDateFrom').val();
         var dateTo = $('#filterDateTo').val();
 
@@ -951,14 +1129,24 @@
             var cardKat = parseInt($(this).data('kategori'));
             var cardRuang = parseInt($(this).data('ruangan'));
             var cardDate = $(this).data('tanggal');
+            var cardStatuses = $(this).data('statuses') ? $(this).data('statuses').toString().split(',') : ['selesai'];
 
             var katOk = (kategori === 'all') ? true : (mappingKategori[cardRuang] ? mappingKategori[cardRuang].includes(parseInt(kategori)) && mappingKategori[cardRuang].includes(cardKat) : cardKat === parseInt(kategori));
+
+            var statusOk = true;
+            if (statusFilter !== 'all') {
+                if (statusFilter === 'pending') {
+                    statusOk = cardStatuses.includes('pending') || cardStatuses.includes('dipending');
+                } else {
+                    statusOk = cardStatuses.includes(statusFilter);
+                }
+            }
 
             var dateOk = true;
             if (dateFrom) dateOk = dateOk && (cardDate >= dateFrom);
             if (dateTo) dateOk = dateOk && (cardDate <= dateTo);
 
-            if (katOk && dateOk) {
+            if (katOk && dateOk && statusOk) {
                 $(this).show();
                 uniqueRooms.add(cardRuang);
                 visibleCards++;
@@ -991,17 +1179,14 @@
             url: "{{ url('maintenance/detail') }}/" + id,
             method: 'GET',
             success: function(data) {
-
                 console.log('DETAIL:', data);
 
                 $('#d-ruangan').text(data.nama_ruangan || '-');
                 $('#d-tanggal').text(data.tanggal || '-');
                 $('#d-teknisi').text(data.nama_teknisi || '-');
                 $('#d-kategori').text(data.nama_kategori || '-');
-
                 $('#d-status').html(data.status_html);
-
-                $('#d-deskripsi').html(data.deskripsi || '-');
+                $('#d-deskripsi').html(formatDeskripsi(data.deskripsi));
 
                 $('#detail-loading').hide();
                 $('#detail-content').show();
@@ -1091,6 +1276,25 @@
         updateDeskripsi();
     });
 
+    const quickTagsMap = {
+        'PC': ['Mati Total', 'Blue Screen', 'Booting Lambat', 'Sering Restart', 'Kena Virus', 'Tidak Bisa Internet'],
+        'Laptop': ['Mati Total', 'Blue Screen', 'Booting Lambat', 'Baterai Drop', 'Kena Virus'],
+        'Printer / Scanner': ['Kertas Macet (Paper Jam)', 'Tinta Habis/Kering', 'Hasil Print Bergaris', 'Tidak Terdeteksi', 'Roller Aus'],
+        'Handphone': ['Bootloop', 'Baterai Drop', 'Layar Pecah', 'Touchscreen Tidak Respon', 'Tidak Bisa Dicas'],
+        'Mouse': ['Tombol Macet', 'Kabel Putus', 'Double Click Sendiri'],
+        'Keyboard': ['Beberapa Tombol Mati', 'Kabel Putus', 'Tuts Lepas'],
+        'Monitor': ['Layar Bergaris', 'Mati Total', 'Kedip-kedip', 'No Signal', 'Warna Pudar'],
+        'USB LAN': ['Port Rusak/Longgar', 'Koneksi Putus', 'Indikator Mati'],
+        'Switch Port Hub': ['Port Rusak', 'Koneksi Putus', 'Mati Total', 'Indikator Mati'],
+        'USB Port': ['Port Longgar/Rusak', 'Tidak Terbaca'],
+        'Finger Print': ['Sensor Tidak Respon', 'Mati Total', 'Jari Penuh', 'Gagal Sinkron'],
+        'Web Cam': ['Gambar Buram', 'Mic Tidak Berfungsi', 'Tidak Terdeteksi'],
+        'CD Room Ex': ['Tidak Terbaca', 'Konektor Longgar'],
+        'HDD External': ['Tidak Terbaca', 'Konektor Longgar', 'Transfer Lambat'],
+        'Rabspery TV': ['Mati Total', 'Sistem Hang', 'Bootloop', 'HDMI Error'],
+        'default': ['Mati Total', 'Kabel Rusak', 'Perlu Pengecekan']
+    };
+
     function updateDeskripsi() {
         var container = $('#deskripsiContainer');
         var placeholder = $('#deskripsiPlaceholder');
@@ -1116,10 +1320,19 @@
             var label = $(this).closest('.form-check').find('label').text().trim();
             var savedVal = existing[id] || '';
 
+            var tags = quickTagsMap[label] || quickTagsMap['default'];
+            var tagsHtml = '';
+            tags.forEach(function(tag) {
+                tagsHtml += '<span class="quick-tag-chip" style="display:inline-block; padding:3px 10px; margin-right:6px; margin-top:6px; background:#e2e8f0; color:#475569; font-size:10px; font-weight:600; border-radius:12px; cursor:pointer; border:1px solid transparent; transition:0.2s;" onmouseover="this.style.background=\'#cbd5e1\'" onmouseout="this.style.background=\'#e2e8f0\'" onclick="var inp = $(this).closest(\'.desc-row\').find(\'.desc-input\'); var cur = inp.val().trim(); if(cur && !cur.endsWith(\',\')) cur += \', \'; inp.val(cur ? cur + $(this).text() : $(this).text());">' + tag + '</span>';
+            });
+
             var row = $(
-                '<div class="desc-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
-                    '<span style="font-size:12px;font-weight:600;color:var(--text-main);min-width:100px;white-space:nowrap;">' + label + ' :</span>' +
-                    '<input type="text" data-kat-id="' + id + '" class="form-control-sm-custom desc-input" style="flex:1;font-size:12px;" placeholder="Deskripsi untuk ' + label + '..." value="' + savedVal + '">' +
+                '<div class="desc-row" style="margin-bottom:12px; border-bottom:1px dashed #e2e8f0; padding-bottom:8px;">' +
+                    '<div style="display:flex;align-items:center;gap:8px;">' +
+                        '<span class="desc-label" style="font-size:12px;font-weight:600;color:var(--text-main);min-width:100px;white-space:nowrap;">' + label + ' :</span>' +
+                        '<input type="text" data-kat-id="' + id + '" class="form-control-sm-custom desc-input" style="flex:1;font-size:12px;" placeholder="Ketik atau pilih rekomendasi di bawah..." value="' + savedVal + '">' +
+                    '</div>' +
+                    '<div style="margin-left: 108px; display:flex; flex-wrap:wrap;">' + tagsHtml + '</div>' +
                 '</div>'
             );
             container.append(row);
@@ -1130,7 +1343,7 @@
     $('#modalMaintenance form').on('submit', function() {
         var parts = [];
         $('#deskripsiContainer .desc-row').each(function() {
-            var label = $(this).find('span').text().replace(' :', '').trim();
+            var label = $(this).find('.desc-label').text().replace(' :', '').trim();
             var val = $(this).find('input').val().trim() || '-';
             parts.push(label + ' : ' + val);
         });
@@ -1172,9 +1385,47 @@
             $('.check-ruangan').not(this).prop('checked', false);
 
             var namaRuang = $(this).closest('.ruangan-item-modal').find('label').text().trim();
-            $('#countPilihanRuangan').html('<i class="fas fa-check-circle"></i> Terpilih: ' + namaRuang);
+            // $('#countPilihanRuangan').html('<i class="fas fa-check-circle"></i> Terpilih: ' + namaRuang);
+            
+            // Filter kategori perangkat berdasarkan ruangan yang dipilih
+            var idRuangan = $(this).val();
+            var allowedKategori = mappingRuanganKategori[idRuangan] || [];
+            
+            // Uncheck semua kategori yang sebelumnya dicentang
+            $('input.check-perangkat').prop('checked', false);
+            $('#countPilihan').text('0 kategori dipilih');
+            updateDeskripsi();
+            
+            // Hide kategori overlay
+            $('#kategori-overlay').hide();
+            
+            // Sembunyikan kategori yang tidak ada di ruangan ini
+            $('.kategori-group').each(function() {
+                var groupHasItem = false;
+                $(this).find('.perangkat-item').each(function() {
+                    var idKat = parseInt($(this).data('kategori-id'));
+                    if (allowedKategori.includes(idKat)) {
+                        $(this).show();
+                        groupHasItem = true;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                
+                // Jika semua item dalam grup disembunyikan, sembunyikan grupnya juga
+                if (groupHasItem) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            
         } else {
-            $('#countPilihanRuangan').text('Belum ada ruangan dipilih');
+            // $('#countPilihanRuangan').text('Belum ada ruangan dipilih');
+            $('#kategori-overlay').show();
+            $('input.check-perangkat').prop('checked', false);
+            $('#countPilihan').text('0 kategori dipilih');
+            updateDeskripsi();
         }
     });
 
@@ -1194,9 +1445,46 @@
 
     $('#modalMaintenance').on('hidden.bs.modal', function () {
         $('.check-ruangan').prop('checked', false);
-        $('#countPilihanRuangan').text('Belum ada ruangan dipilih');
+        // $('#countPilihanRuangan').text('Belum ada ruangan dipilih');
         $('#searchRuanganModal').val('');
         $('.ruangan-item-modal').show();
+        
+        $('input.check-perangkat').prop('checked', false);
+        $('#countPilihan').text('0 kategori dipilih');
+        $('#searchPerangkat').val('');
+        $('.perangkat-item, .kategori-group').show();
+        updateDeskripsi();
+        $('#kategori-overlay').show();
     });
+
+    $(function() {
+        let urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.has('status')) {
+            let status = urlParams.get('status');
+            if (status === 'diterima') {
+                $('#filterStatusDropdown').val('diterima');
+                applyAllFilters();
+            }
+        }
+
+        if (urlParams.has('buka_detail')) {
+            let detailId = urlParams.get('buka_detail');
+            let btn = $('.btn-detail-card[data-id="' + detailId + '"]');
+            if (btn.length) {
+                // Beri sedikit jeda agar DOM ter-render dulu jika diperlukan
+                setTimeout(() => {
+                    btn.trigger('click');
+                }, 300);
+            }
+        }
+    });
+
+    function formatDeskripsi(deskripsi) {
+        if (!deskripsi || deskripsi === '') {
+            return '-';
+        }
+        return deskripsi;
+    }
 </script>
 @endsection

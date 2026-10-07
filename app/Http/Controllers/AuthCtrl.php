@@ -35,6 +35,13 @@ class AuthCtrl extends Controller
             ->withInput();
     }
 
+    // Cek apakah user aktif
+    if (isset($user->is_active) && !$user->is_active) {
+        return back()
+            ->withErrors(['login_error' => 'Akun Anda telah dinonaktifkan. Hubungi admin.'])
+            ->withInput();
+    }
+
     // Jika sama persis (ARUL dan ARUL), baru bisa login
     Auth::loginUsingId($user->id);
 

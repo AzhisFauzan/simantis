@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 use Barryvdh\DomPDF\Facade\Pdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class LaporanCtrl extends Controller
 {
@@ -66,7 +68,9 @@ class LaporanCtrl extends Controller
                 ->join(', ')
             : 'Semua Ruangan';
 
-        $pdf = Pdf::loadView('laporan.inventaris_pdf', compact('perangkat', 'namaRuangan'))
+        $qrCodes = $this->generateQrCodes('LAPORAN INVENTARIS PERANGKAT IT');
+
+        $pdf = Pdf::loadView('laporan.inventaris_pdf', compact('perangkat', 'namaRuangan', 'qrCodes'))
                   ->setPaper('a4', 'landscape');
 
         return $pdf->stream('laporan-inventaris-' . now()->format('Ymd') . '.pdf');
@@ -98,6 +102,8 @@ class LaporanCtrl extends Controller
                 'm.deskripsi',
                 'm.id_pengaduan_masuk',
                 'pm.deskripsi_masalah as deskripsi_pengaduan',
+                'pm.created_at as waktu_masuk',
+                'm.updated_at as waktu_selesai',
                 DB::raw('COALESCE(pm.kode_inventaris, (SELECT MIN(p.kode_inventaris) FROM perangkat p WHERE p.id_ruangan = m.id_ruangan AND p.id_kategori = m.id_kategori)) as kode_inventaris')
             );
 
@@ -147,6 +153,8 @@ class LaporanCtrl extends Controller
                 'id_ruangan'      => $first->id_ruangan,
                 'nama_ruangan'    => $first->nama_ruangan,
                 'tanggal'         => $first->tanggal,
+                'waktu_masuk'     => $first->waktu_masuk,
+                'waktu_selesai'   => $first->waktu_selesai ?? $first->tanggal,
                 'kategori'        => $kategori,
                 'id_kategori'     => $id_kategori,
                 'nama_teknisi'    => $teknisi ?: '-',
@@ -182,6 +190,8 @@ class LaporanCtrl extends Controller
             'm.deskripsi',
             'm.id_pengaduan_masuk',
             'pm.deskripsi_masalah as deskripsi_pengaduan',
+            'pm.created_at as waktu_masuk',
+            'm.updated_at as waktu_selesai',
             DB::raw('COALESCE(pm.kode_inventaris, (SELECT MIN(p.kode_inventaris) FROM perangkat p WHERE p.id_ruangan = m.id_ruangan AND p.id_kategori = m.id_kategori)) as kode_inventaris')
         );
 
@@ -203,6 +213,7 @@ class LaporanCtrl extends Controller
         $maintenances = $rawData->groupBy(function ($item) {
             return $item->id_ruangan . '_' . \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d');
         })->map(function ($group) {
+
             $first = $group->first();
 
             $kategori = $group->pluck('nama_kategori')->unique()->implode(', ');
@@ -221,16 +232,64 @@ class LaporanCtrl extends Controller
                 $sumber_html = '<span class="badge badge-secondary" style="background-color: #6c757d; color: white; padding: 3px 6px; border-radius: 4px;">Input Manual</span>';
             }
 
-            $deskripsiGabungan = $group->map(function ($item) {
-                $isiTeks =  ($item->deskripsi ?? '-');
-                return '• <b>' . $item->nama_kategori . '</b> : ' . $isiTeks;
-            })->implode('<br>');
+            $deskripsiGabungan = $group->unique('id_kategori')->map(function ($item) {
+
+                $kategori = trim($item->nama_kategori ?? '');
+                $rawDeskripsi = trim($item->deskripsi ?? '');
+
+                $parts = explode('|', $rawDeskripsi);
+                $isiArray = [];
+
+                foreach ($parts as $part) {
+
+                    $part = trim($part);
+
+                    if ($kategori !== '' && preg_match('/^' . preg_quote($kategori, '/') . '\s*:/i', $part)) {
+
+                        $isi_text = trim(
+                            preg_replace(
+                                '/^' . preg_quote($kategori, '/') . '\s*:\s*/i',
+                                '',
+                                $part
+                            )
+                        );
+
+                        if ($isi_text !== '') {
+                            $isiArray[] = $isi_text;
+                        }
+                    }
+                }
+
+                if (empty($isiArray) && $rawDeskripsi !== '') {
+
+                    $isi_text = trim(
+                        preg_replace(
+                            '/^' . preg_quote($kategori, '/') . '\s*:\s*/i',
+                            '',
+                            $rawDeskripsi
+                        )
+                    );
+
+                    if ($isi_text !== '') {
+                        $isiArray[] = $isi_text;
+                    }
+                }
+
+                $isi = empty($isiArray)
+                    ? '-'
+                    : implode(', ', array_unique($isiArray));
+
+                return '• <b>' . $kategori . '</b> : ' . $isi;
+
+            })->filter()->unique()->implode('<br>');
 
             return (object)[
                 'id_maintenance'  => $first->id_maintenance,
                 'id_ruangan'      => $first->id_ruangan,
                 'nama_ruangan'    => $first->nama_ruangan,
                 'tanggal'         => $first->tanggal,
+                'waktu_masuk'     => $first->waktu_masuk,
+                'waktu_selesai'   => $first->waktu_selesai ?? $first->tanggal,
                 'kategori'        => $kategori,
                 'id_kategori'     => $id_kategori,
                 'nama_teknisi'    => $teknisi ?: '-',
@@ -240,9 +299,49 @@ class LaporanCtrl extends Controller
             ];
         })->values();
 
-        $pdf = Pdf::loadView('laporan.maintenance_pdf', compact('maintenances'))->setPaper('a4', 'landscape');
+        $qrCodes = $this->generateQrCodes('LAPORAN RIWAYAT MAINTENANCE IT');
+
+        $pdf = Pdf::loadView('laporan.maintenance_pdf', compact('maintenances', 'qrCodes'))->setPaper('a4', 'landscape');
 
         return $pdf->stream('laporan-maintenance-' . now()->format('Ymd') . '.pdf');
+    }
+
+    private function generateQrCodes(string $jenisLaporan): array
+    {
+        $tanggalTtd = now()->format('d-m-Y H:i:s');
+        $baseUrl = url('/verifikasi-ttd');
+
+        $signers = [
+            'teknisi' => [
+                'jenis'         => $jenisLaporan,
+                'instansi'      => 'RSU DARMAYU MADIUN',
+                'penandatangan' => 'ALLYSA JUNE ARRAHMAN, S.Kom.',
+                'jabatan'       => 'TEKNISI',
+                'tanggal_ttd'   => $tanggalTtd,
+            ],
+            'kepala' => [
+                'jenis'         => $jenisLaporan,
+                'instansi'      => 'RSU DARMAYU MADIUN',
+                'penandatangan' => 'INDRA LAKSANA PUTRA, S.Kom.',
+                'jabatan'       => 'KEPALA UNIT IT / PROGRAMMER',
+                'tanggal_ttd'   => $tanggalTtd,
+            ],
+        ];
+
+        $qrCodes = [];
+        foreach ($signers as $key => $data) {
+            $encrypted = Crypt::encryptString(json_encode($data));
+            $url = $baseUrl . '?data=' . urlencode($encrypted);
+
+            $svg = QrCode::format('svg')
+                    ->size(120)
+                    ->margin(1)
+                    ->generate($url);
+
+            $qrCodes[$key] = base64_encode($svg);
+        }
+
+        return $qrCodes;
     }
 }
 

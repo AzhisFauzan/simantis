@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AuthCtrl, DashboardCtrl, UserCtrl, PerangkatCtrl,
-    KategoriCtrl, LaporanCtrl, MaintenanceCtrl, RuanganCtrl, PengaduanMasukCtrl, NotifikasiCtrl
+    KategoriCtrl, LaporanCtrl, MaintenanceCtrl, RuanganCtrl, PengaduanMasukCtrl, NotifikasiCtrl,
+    VerifikasiTtdController
 };
 
 Route::get('/', [AuthCtrl::class, 'login'])->name('login');
 Route::post('/login/check', [AuthCtrl::class, 'proses_login'])->name('login.check');
+Route::get('/verifikasi-ttd', [VerifikasiTtdController::class, 'verifikasi']);
 
 Route::middleware(['auth'])->group(function () {
 
@@ -21,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/user/data_user', [UserCtrl::class, 'store_user']);
         Route::post('/user/data_user/{id}/update', [UserCtrl::class, 'update']);
         Route::get('/user/data_user/{id}/delete', [UserCtrl::class, 'delete_user']);
+        Route::post('/user/data_user/{id}/toggle-status', [UserCtrl::class, 'toggle_status']);
 
         # Kategori Perangkat
         Route::get('/kategori', [KategoriCtrl::class, 'data_kategori']);
@@ -54,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/perangkat/data_perangkat', [PerangkatCtrl::class, 'store_perangkat']);
     Route::post('/perangkat/data_perangkat/{id}/update', [PerangkatCtrl::class, 'update_perangkat']);
     Route::post('/perangkat/data_perangkat/{id}/delete', [PerangkatCtrl::class, 'delete_perangkat']);
+    Route::get('/perangkat/riwayat-maintenance/{id_kategori}/{id_ruangan}', [PerangkatCtrl::class, 'riwayatMaintenancePerangkat']);
+
 
 
     # Maintenance

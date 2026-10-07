@@ -359,6 +359,49 @@
         align-items: center;
     }
 
+    /* ── Toggle Switch ── */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #cbd5e1;
+        border-radius: 22px;
+        transition: background .25s, box-shadow .25s;
+    }
+    .toggle-slider::before {
+        content: '';
+        position: absolute;
+        height: 16px; width: 16px;
+        left: 3px; bottom: 3px;
+        background: #fff;
+        border-radius: 50%;
+        transition: transform .25s;
+        box-shadow: 0 1px 3px rgba(0,0,0,.15);
+    }
+    .toggle-switch input:checked + .toggle-slider {
+        background: var(--rs-green);
+        box-shadow: 0 0 8px rgba(22, 163, 74, .35);
+    }
+    .toggle-switch input:checked + .toggle-slider::before {
+        transform: translateX(18px);
+    }
+    .toggle-status-label {
+        font-size: 10px;
+        font-weight: 600;
+        display: block;
+        margin-top: 2px;
+        letter-spacing: .3px;
+    }
+    .toggle-status-label.active { color: var(--rs-green); }
+    .toggle-status-label.inactive { color: #94a3b8; }
+
     /* Animasi Pop Spin untuk Icon Modal Success */
     @keyframes pop-spin {
         0% { transform: scale(0.5) rotate(-90deg); opacity: 0; }
@@ -426,7 +469,9 @@
                     <tr>
                         <th class="text-center" style="width: 80px;">No</th>
                         <th>Pengguna</th>
-                        <th>Role</th> <th class="text-center" style="width: 100px;">Aksi</th>
+                        <th>Role</th>
+                        <th class="text-center" style="width: 80px;">Status</th>
+                        <th class="text-center" style="width: 100px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="tbody-user">
@@ -445,6 +490,13 @@
                                 <span class="badge-dot"></span>
                                 {{ ucfirst($user->role) }}
                             </span>
+                        </td>
+                        <td class="text-center">
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-active" data-id="{{ $user->id }}" {{ $user->is_active ? 'checked' : '' }}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-status-label {{ $user->is_active ? 'active' : 'inactive' }}">{{ $user->is_active ? 'Aktif' : 'Nonaktif' }}</span>
                         </td>
                         <td class="text-center">
                             <div class="action-buttons">
@@ -686,6 +738,13 @@ $(document).ready(function(){
                                 </span>
                             </td>
                             <td class="text-center">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="toggle-active" data-id="${response.id}" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status-label active">Aktif</span>
+                            </td>
+                            <td class="text-center">
                                 <div class="action-buttons">
                                     <button class="action-btn edit btn-edit"
                                         data-id="${response.id}"
@@ -839,6 +898,37 @@ $(document).ready(function(){
     $('#modalEditUser').on('hidden.bs.modal', function(){
         $('#alertErrorEdit').hide().text('');
         $('#formEditUser')[0].reset();
+    });
+
+    // ===================== TOGGLE STATUS USER =====================
+    $(document).on('change', '.toggle-active', function(){
+        var checkbox = $(this);
+        var id = checkbox.data('id');
+        var label = checkbox.closest('td').find('.toggle-status-label');
+
+        $.ajax({
+            url: "{{ url('/user/data_user') }}/" + id + "/toggle-status",
+            type: "POST",
+            data: {
+                _token: $('input[name=_token]').val()
+            },
+            success: function(response){
+                if(response.status == 'success'){
+                    if(response.is_active){
+                        label.text('Aktif').removeClass('inactive').addClass('active');
+                    } else {
+                        label.text('Nonaktif').removeClass('active').addClass('inactive');
+                    }
+                    var msg = response.is_active ? 'User "' + response.name + '" diaktifkan' : 'User "' + response.name + '" dinonaktifkan';
+                    showSuccessModal(msg);
+                }
+            },
+            error: function(){
+                // Revert checkbox jika gagal
+                checkbox.prop('checked', !checkbox.prop('checked'));
+                alert('Gagal mengubah status user.');
+            }
+        });
     });
 
 });

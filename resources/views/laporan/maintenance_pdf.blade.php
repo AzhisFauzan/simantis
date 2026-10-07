@@ -94,13 +94,14 @@
     <table class="tabel-data">
         <thead>
             <tr>
-                <th width="5%">NO</th>
-                <th width="12%">KODE INVENTARIS</th>
-                <th width="18%">KATEGORI</th>
-                <th width="15%">RUANGAN</th>
+                <th width="4%">NO</th>
+                <th width="11%">KODE INVENTARIS</th>
+                <th width="15%">KATEGORI</th>
+                <th width="13%">RUANGAN</th>
                 <th width="12%">TEKNISI</th>
-                <th width="13%">TANGGAL</th>
-                <th width="25%">DESKRIPSI</th>
+                <th width="12%">WAKTU MASUK</th>
+                <th width="12%">WAKTU SELESAI</th>
+                <th width="21%">DESKRIPSI</th>
             </tr>
         </thead>
         <tbody>
@@ -114,7 +115,8 @@
                 </td>
                 <td>{{ $m->nama_ruangan ?? '-' }}</td>
                 <td>{{ $m->nama_teknisi ?? '-' }}</td>
-                <td align="center">{{ \Carbon\Carbon::parse($m->tanggal)->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</td>
+                <td align="center">{{ $m->waktu_masuk ? \Carbon\Carbon::parse($m->waktu_masuk)->timezone('Asia/Jakarta')->format('d/m/Y H:i') : '-' }}</td>
+                <td align="center">{{ \Carbon\Carbon::parse($m->waktu_selesai)->timezone('Asia/Jakarta')->format('d/m/Y H:i') }}</td>
                 <td>{!! $m->deskripsi ?? '-' !!}</td>
             </tr>
             @empty
@@ -127,23 +129,22 @@
 
     <table class="tabel-ttd">
         <tr>
-            <td>
-                DIREKTUR<br>
-                RSU DARMAYU MADIUN
-                <div class="spasi-ttd"></div>
-                (.................................................)
+            <td style="width: 35%; text-align: center; padding-left: 40px;">
+                <br>
+                TEKNISI
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <img src="data:image/svg+xml;base64,{{ $qrCodes['teknisi'] }}" style="width: 70px; height: 70px;">
+                </div>
+                ALLYSA JUNE A., S. Kom.
             </td>
-            <td>
-                KEPALA BAGIAN<br>
-                ADMINISTRASI DAN UMUM
-                <div class="spasi-ttd"></div>
-                (.................................................)
-            </td>
-            <td>
+            <td style="width: 30%;"></td>
+            <td style="width: 35%; text-align: center; padding-right: 40px;">
                 KEPALA UNIT<br>
-                IT/PROGRAMMER
-                <div class="spasi-ttd"></div>
-                (.................................................)
+                IT / PROGRAMMER
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <img src="data:image/svg+xml;base64,{{ $qrCodes['kepala'] }}" style="width: 70px; height: 70px;">
+                </div>
+                INDRA LAKSANA PUTRA, S.Kom.
             </td>
         </tr>
     </table>

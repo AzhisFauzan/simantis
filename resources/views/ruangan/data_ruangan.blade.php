@@ -622,24 +622,23 @@
         </div>
     </div>
 </div>
-
 <script>
     function showSuccessModal(message, type = 'success') {
         $('#successMsg').text(message);
-        
+
         let iconContainer = $('#successIconContainer');
         let icon = $('#successIcon');
-        
+
         iconContainer.removeClass('animate-pop-spin');
-        void iconContainer[0].offsetWidth; 
+        void iconContainer[0].offsetWidth;
         iconContainer.addClass('animate-pop-spin');
 
         if(type === 'danger') {
-            iconContainer.css('background', '#fee2e2'); 
-            icon.attr('class', 'fas fa-trash').css('color', '#dc2626'); 
+            iconContainer.css('background', '#fee2e2');
+            icon.attr('class', 'fas fa-trash').css('color', '#dc2626');
         } else {
-            iconContainer.css('background', '#dcfce7'); 
-            icon.attr('class', 'fas fa-check').css('color', '#16a34a'); 
+            iconContainer.css('background', '#dcfce7');
+            icon.attr('class', 'fas fa-check').css('color', '#16a34a');
         }
 
         $('.modal').modal('hide');
@@ -671,11 +670,28 @@
     const allData = @json($all_ruangan);
     const liveSearchInput = document.getElementById('liveSearchInput');
     const resetSearch = document.getElementById('resetSearch');
-    const tableRows = document.querySelectorAll('#ruanganTable tbody tr');
     const tbody = document.getElementById('tbody-user');
+
+    const originalTbody = tbody.innerHTML;
+    const originalPaginationInfo = document.querySelector('.pagination-info').innerHTML;
+    const originalPagination = document.querySelector('.pagination')?.outerHTML || '';
 
     liveSearchInput.addEventListener('input', function () {
         const keyword = this.value.toLowerCase().trim();
+
+        resetSearch.style.display = keyword ? 'inline-flex' : 'none';
+
+        if (!keyword) {
+            tbody.innerHTML = originalTbody;
+            document.querySelector('.pagination-info').innerHTML = originalPaginationInfo;
+
+            const pagination = document.querySelector('.pagination');
+            if (pagination && originalPagination) {
+                pagination.outerHTML = originalPagination;
+            }
+
+            return;
+        }
 
         const filtered = allData.filter(item => {
             return (
@@ -690,7 +706,17 @@
             tbody.innerHTML = `
                 <tr>
                     <td colspan="4" class="text-center">Data tidak ditemukan</td>
-                </tr>`;
+                </tr>
+            `;
+
+            document.querySelector('.pagination-info').innerHTML =
+                'Tidak ada data yang ditemukan';
+
+            const pagination = document.querySelector('.pagination');
+            if (pagination) {
+                pagination.innerHTML = '';
+            }
+
             return;
         }
 
@@ -712,6 +738,7 @@
                                 data-lokasi="${item.lokasi}">
                                 <i class="fas fa-pen"></i>
                             </button>
+
                             <button class="btn-icon btn-icon-danger btn-hapus"
                                 data-id_ruangan="${item.id_ruangan}"
                                 data-nama_ruangan="${item.nama_ruangan}">
@@ -723,12 +750,26 @@
             `;
         });
 
-        resetSearch.style.display = keyword ? 'inline-flex' : 'none';
+        document.querySelector('.pagination-info').innerHTML =
+            `Menampilkan ${filtered.length} hasil pencarian`;
+
+        const pagination = document.querySelector('.pagination');
+        if (pagination) {
+            pagination.innerHTML = '';
+        }
     });
 
     resetSearch.addEventListener('click', function () {
         liveSearchInput.value = '';
-        location.reload(); 
+        tbody.innerHTML = originalTbody;
+        document.querySelector('.pagination-info').innerHTML = originalPaginationInfo;
+
+        const pagination = document.querySelector('.pagination');
+        if (pagination && originalPagination) {
+            pagination.outerHTML = originalPagination;
+        }
+
+        resetSearch.style.display = 'none';
     });
 
     document.getElementById('modalTambahruangan').addEventListener('keydown', function(e) {
@@ -753,13 +794,13 @@
         }
 
         if (hapusBtn) {
-            document.getElementById('hapus_nama_ruangan').textContent =
-                hapusBtn.dataset.nama_ruangan;
 
-            document.getElementById('formHapus').action =
-                baseUrl + '/ruangan/data_ruangan/' + hapusBtn.dataset.id_ruangan + '/delete';
+        const idRuangan = hapusBtn.dataset.id_ruangan;
 
+        document.getElementById('formHapus').action =
+            baseUrl + '/ruangan/data_ruangan/' + idRuangan + '/delete';
             $('#modalHapusruangan').modal('show');
+            return;
         }
     });
 </script>

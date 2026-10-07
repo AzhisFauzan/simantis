@@ -381,8 +381,7 @@
 
     <div class="page-header">
         <div>
-            <h1 class="page-title"><i class="fas fa-file-contract mr-2" style="color: var(--rs-purple);"></i>Riwayat Laporan Maintenance</h1>
-            <p class="page-subtitle">Data riwayat perawatan perangkat IT yang telah selesai</p>
+            <h1 class="page-title">Laporan Maintenance</h1>
         </div>
         <a href="{{ url('/laporan/maintenance/print') }}?{{ http_build_query(request()->all()) }}"
            target="_blank" class="btn-print">
@@ -559,7 +558,10 @@
                 <span class="detail-label">Teknisi</span>
                 <div class="detail-value" id="modal-nama-teknisi">-</div>
 
-                <span class="detail-label">Tanggal Maintenance</span>
+                <span class="detail-label">Waktu Pengaduan Masuk</span>
+                <div class="detail-value" id="modal-waktu-masuk">-</div>
+
+                <span class="detail-label">Waktu Selesai</span>
                 <div class="detail-value" id="modal-tanggal">-</div>
 
                 <span class="detail-label">Deskripsi & Catatan</span>
@@ -581,7 +583,8 @@ function bukaModalDetail(idMaintenance) {
         .then(data => {
             document.getElementById('modal-nama-ruangan').innerText = data.nama_ruangan || '-';
             document.getElementById('modal-nama-teknisi').innerText = data.nama_teknisi || '-';
-            document.getElementById('modal-tanggal').innerText = data.tanggal || '-';
+            document.getElementById('modal-waktu-masuk').innerText = data.waktu_masuk || '-';
+            document.getElementById('modal-tanggal').innerText = data.waktu_selesai || '-';
             document.getElementById('modal-deskripsi').innerHTML = data.deskripsi || '-';
             
             $('#modalDetailMaintenance').modal('show'); 

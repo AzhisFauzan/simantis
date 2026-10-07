@@ -5,6 +5,7 @@
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 <!-- jQuery -->
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 

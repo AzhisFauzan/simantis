@@ -6,8 +6,8 @@ use App\Models\Perangkat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http; 
-use Illuminate\Support\Facades\Log;  
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PerangkatCtrl extends Controller
 {
@@ -48,6 +48,11 @@ class PerangkatCtrl extends Controller
             ->first();
 
         if (!$perangkat) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Perangkat tidak ditemukan.',
+                ], 404);
+            }
             return redirect()->back()->with('error', 'Perangkat tidak ditemukan.');
         }
 
@@ -62,8 +67,13 @@ class PerangkatCtrl extends Controller
                 'tanggal_pindah'    => $request->tanggal_pindah,
             ]);
 
+        // Panggilan ke API eksternal SIPITRS diberi timeout pendek supaya kalau
+        // server SIPITRS lambat/mati, request user TIDAK ikut ngeblok lama
+        // (sebelumnya bisa hang sampai puluhan detik menunggu timeout default).
         try {
             Http::withToken(env('SIMANTIS_SECRET_KEY', 'darmayu123'))
+                ->timeout(3)
+                ->connectTimeout(2)
                 ->post(env('SIPITRS_API_URL') . '/perangkat/move', [
                     'kode_inventaris'   => $perangkat->kode_inventaris,
                     'id_ruangan_tujuan' => $request->id_ruangan_tujuan,
@@ -74,12 +84,18 @@ class PerangkatCtrl extends Controller
 
         $ruangan_tujuan = DB::table('ruangan')->where('id_ruangan', $request->id_ruangan_tujuan)->first();
 
-        return redirect()->back()
-            ->with('success',
-                'Perangkat "' . $perangkat->nama_kategori . '" berhasil dipindahkan ke ' .
-                $ruangan_tujuan->nama_ruangan . ' oleh ' .
-                $user->name . ' (' . $user->role . ').'
-            );
+        $message = 'Perangkat "' . $perangkat->nama_kategori . '" berhasil dipindahkan ke ' .
+            $ruangan_tujuan->nama_ruangan . ' oleh ' .
+            $user->name . ' (' . $user->role . ').';
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'message' => $message,
+                'type'    => 'success',
+            ]);
+        }
+
+        return redirect()->back()->with('success', $message);
     }
 
     public function kategoriRuangan(){
@@ -119,6 +135,8 @@ class PerangkatCtrl extends Controller
 
         try {
             Http::withToken(env('SIMANTIS_SECRET_KEY', 'darmayu123'))
+            ->timeout(3)
+            ->connectTimeout(2)
             ->post(env('SIPITRS_API_URL') . '/perangkat/store', [
                 'id_ruangan'      => $request->id_ruangan,
                 'kode_inventaris' => $request->kode_inventaris,
@@ -128,6 +146,13 @@ class PerangkatCtrl extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('API Store SIPITRS gagal: ' . $e->getMessage());
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'message' => 'Data Perangkat berhasil ditambahkan.',
+                'type'    => 'success',
+            ]);
         }
 
         return back()->with('success', 'Data Perangkat berhasil ditambahkan.');
@@ -154,6 +179,8 @@ class PerangkatCtrl extends Controller
         if ($old_perangkat) {
             try {
                 Http::withToken(env('SIMANTIS_SECRET_KEY', 'darmayu123'))
+                    ->timeout(3)
+                    ->connectTimeout(2)
                     ->post(env('SIPITRS_API_URL') . '/perangkat/update', [
                         'old_kode_inventaris' => $old_perangkat->kode_inventaris,
                         'id_ruangan'          => $request->id_ruangan,
@@ -167,10 +194,17 @@ class PerangkatCtrl extends Controller
             }
         }
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'message' => 'Data Perangkat berhasil diperbarui.',
+                'type'    => 'success',
+            ]);
+        }
+
         return back()->with('success', 'Data Perangkat berhasil diperbarui.');
     }
 
-    public function delete_perangkat($id)
+    public function delete_perangkat(Request $request, $id)
     {
         $perangkat = DB::table('perangkat')->where('id_perangkat', $id)->first();
 
@@ -179,6 +213,8 @@ class PerangkatCtrl extends Controller
 
             try {
                 Http::withToken(env('SIMANTIS_SECRET_KEY', 'darmayu123'))
+                ->timeout(3)
+                ->connectTimeout(2)
                 ->post(env('SIPITRS_API_URL') . '/perangkat/delete', [
                     'kode_inventaris' => $perangkat->kode_inventaris,
                 ]);
@@ -187,6 +223,27 @@ class PerangkatCtrl extends Controller
             }
         }
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'message' => 'Data berhasil dihapus.',
+                'type'    => 'danger',
+            ]);
+        }
+
         return back()->with('success', 'Data berhasil dihapus.');
+    }
+
+    public function riwayatMaintenancePerangkat($id_kategori, $id_ruangan)
+    {
+        $riwayat = DB::table('maintenance')
+            ->where('id_kategori', $id_kategori)
+            ->where('id_ruangan', $id_ruangan)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $riwayat
+        ]);
     }
 }

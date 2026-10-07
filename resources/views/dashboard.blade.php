@@ -5,7 +5,6 @@
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
     :root {
-        /* Warna Khas RS Darmayu - Flat Version */
         --rs-purple:       #7b2fbe; /* Purple solid */
         --rs-green:        #1db954; /* Green solid */
         --rs-blue:         #0284c7; /* Blue solid */

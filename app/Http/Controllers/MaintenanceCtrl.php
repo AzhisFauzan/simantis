@@ -31,10 +31,20 @@ class MaintenanceCtrl extends Controller
 
         $ruangan = DB::table('ruangan')->get();
 
+        $mappingRuanganKategori = DB::table('perangkat')
+            ->select('id_ruangan', 'id_kategori')
+            ->distinct()
+            ->get()
+            ->groupBy('id_ruangan')
+            ->map(function ($items) {
+                return $items->pluck('id_kategori');
+            });
+
         return view('maintenance.maintenance', compact(
             'maintenances',
             'kategoriPerangkat',
-            'ruangan'
+            'ruangan',
+            'mappingRuanganKategori'
         ));
     }
 
@@ -64,6 +74,8 @@ class MaintenanceCtrl extends Controller
                 'r.nama_ruangan',
                 'k.nama_kategori',
                 'pm.status as status_pengaduan',
+                'pm.created_at as waktu_masuk',
+                'm.updated_at as waktu_selesai'
             )
             ->get();
 
@@ -83,14 +95,41 @@ class MaintenanceCtrl extends Controller
             ->implode(', ');
 
         $deskripsi = $maintenances
-        ->unique(function ($item) {
-            return $item->id_kategori . '_' . $item->deskripsi;
-        })
-        ->map(function ($item) {
-            $isi = $item->deskripsi ?? '-';
-            return '• <b>'.$item->nama_kategori.'</b> : '.$isi;
-        })
-        ->implode('<br>');
+            ->unique('id_kategori') // Pastikan tidak ada kategori duplikat di perulangan awal
+            ->map(function ($item) {
+                $kategori = trim($item->nama_kategori ?? '');
+                $rawDeskripsi = trim($item->deskripsi ?? '');
+
+                $parts = explode('|', $rawDeskripsi);
+                $isiArray = [];
+
+                foreach ($parts as $part) {
+                    $part = trim($part);
+                    // Cek apakah potongan string ini diawali dengan nama kategori yang sesuai
+                    if ($kategori !== '' && preg_match('/^' . preg_quote($kategori, '/') . '\s*:/i', $part)) {
+                        // Ambil teks setelah "Kategori :"
+                        $isi_text = trim(preg_replace('/^' . preg_quote($kategori, '/') . '\s*:\s*/i', '', $part));
+                        if ($isi_text !== '') {
+                            $isiArray[] = $isi_text;
+                        }
+                    }
+                }
+
+                // Fallback: Jika array kosong (mungkin format data lama yang tidak pakai "|")
+                if (empty($isiArray) && $rawDeskripsi !== '') {
+                    $isi_text = trim(preg_replace('/^' . preg_quote($kategori, '/') . '\s*:\s*/i', '', $rawDeskripsi));
+                    if ($isi_text !== '') {
+                        $isiArray[] = $isi_text;
+                    }
+                }
+
+                $isi = empty($isiArray) ? '-' : implode(', ', array_unique($isiArray));
+
+                return '• <b>' . $kategori . '</b> : ' . $isi;
+            })
+            ->filter()
+            ->unique()
+            ->implode('<br>');
 
         $uniqueStatuses = $maintenances->pluck('status_pengaduan')->unique()->filter()->values();
         $statusBadgesHtml = '';
@@ -124,9 +163,21 @@ class MaintenanceCtrl extends Controller
             $statusBadgesHtml = '<span class="badge badge-success"><i class="fas fa-check-circle"></i> Maintenance Selesai</span>';
         }
 
+        $tanggalTampil = $first->tanggal;
+        if ($first->waktu_masuk && $uniqueStatuses->count() > 0) {
+            $belumSelesai = $uniqueStatuses->map(fn($s) => strtolower($s))->contains(function ($s) {
+                return in_array($s, ['diterima', 'diproses', 'pending', 'menunggu', 'dipending']);
+            });
+            if ($belumSelesai) {
+                $tanggalTampil = $first->waktu_masuk;
+            }
+        }
+
         return response()->json([
             'nama_ruangan'   => $first->nama_ruangan,
-            'tanggal' => \Carbon\Carbon::parse($first->tanggal)->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y, H:i'),
+            'tanggal' => \Carbon\Carbon::parse($tanggalTampil)->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y, H:i'),
+            'waktu_masuk'    => $first->waktu_masuk ? \Carbon\Carbon::parse($first->waktu_masuk)->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y, H:i') : '-',
+            'waktu_selesai'  => $first->waktu_selesai ? \Carbon\Carbon::parse($first->waktu_selesai)->timezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y, H:i') : '-',
             'nama_teknisi'   => $teknisi ?: '-',
             'nama_kategori'  => $kategori ?: '-',
             'status_html'    => $statusBadgesHtml,
@@ -210,6 +261,8 @@ class MaintenanceCtrl extends Controller
                 'a.*',
                 'c.nama_ruangan',
                 'k.nama_kategori',
+                'pm.created_at as waktu_masuk',
+                'a.updated_at as waktu_selesai',
                 DB::raw('COALESCE(a.deskripsi, "-") as deskripsi')
             )
             ->get();
@@ -244,6 +297,8 @@ class MaintenanceCtrl extends Controller
                 'id_ruangan'     => $first->id_ruangan,
                 'nama_ruangan'   => $first->nama_ruangan,
                 'tanggal'        => $first->tanggal,
+                'waktu_masuk'    => $first->waktu_masuk,
+                'waktu_selesai'  => $first->waktu_selesai ?? $first->tanggal,
                 'kategori'       => $kategori,
                 'id_kategori'    => $id_kategori,
                 'nama_teknisi'   => $teknisi ?: '-',
@@ -285,23 +340,50 @@ class MaintenanceCtrl extends Controller
                 'm.*',
                 'r.nama_ruangan',
                 'k.nama_kategori',
-                'pm.deskripsi_masalah as deskripsi_pengaduan'
+                'pm.deskripsi_masalah as deskripsi_pengaduan',
+                'pm.created_at as waktu_masuk',
+                'm.updated_at as waktu_selesai'
             )
             ->get();
 
         $first = $maintenances->first();
         $teknisi = $maintenances->pluck('nama_teknisi')->unique()->filter()->implode(', ');
 
-        $deskripsi = $maintenances->unique(function ($item) {
-            return $item->id_kategori . '_' . $item->deskripsi;
-        })->map(function ($item) {
-            $sumberText = $item->id_pengaduan_masuk
-                ? ' <span class="badge badge-info" style="font-size:10px; padding:1px 4px;">Pengaduan</span>'
-                : ' <span class="badge badge-secondary" style="font-size:10px; padding:1px 4px;">Manual</span>';
+        $deskripsi = $maintenances
+            ->unique('id_kategori')
+            ->map(function ($item) {
+                $kategori = trim($item->nama_kategori ?? '');
+                $rawDeskripsi = trim($item->deskripsi ?? '');
 
-            $isiTeks = $item->deskripsi ?? '-';
-            return '• <b>'.$item->nama_kategori.'</b>'.$sumberText.' : '.$isiTeks;
-        })->implode('<br>');
+                $sumberText = $item->id_pengaduan_masuk
+                    ? ' <span class="badge badge-info" style="font-size:10px; padding:1px 4px;">Dari Pengaduan</span>'
+                    : ' <span class="badge badge-secondary" style="font-size:10px; padding:1px 4px;">Input Manual</span>';
+
+                $parts = explode('|', $rawDeskripsi);
+                $isiArray = [];
+
+                foreach ($parts as $part) {
+                    $part = trim($part);
+                    if ($kategori !== '' && preg_match('/^' . preg_quote($kategori, '/') . '\s*:/i', $part)) {
+                        $isi_text = trim(preg_replace('/^' . preg_quote($kategori, '/') . '\s*:\s*/i', '', $part));
+                        if ($isi_text !== '') {
+                            $isiArray[] = $isi_text;
+                        }
+                    }
+                }
+
+                if (empty($isiArray) && $rawDeskripsi !== '') {
+                    $isi_text = trim(preg_replace('/^' . preg_quote($kategori, '/') . '\s*:\s*/i', '', $rawDeskripsi));
+                    if ($isi_text !== '') {
+                        $isiArray[] = $isi_text;
+                    }
+                }
+                $isi = empty($isiArray) ? '-' : implode(', ', array_unique($isiArray));
+                return '• ' . $sumberText . ' <b>' . $kategori . '</b> : ' . $isi;
+            })
+            ->filter()
+            ->unique()
+            ->implode('<br>');
 
         $kategorisFormatted = $maintenances->map(function($item) {
             return ['nama_kategori' => $item->nama_kategori];
@@ -310,6 +392,8 @@ class MaintenanceCtrl extends Controller
         return response()->json([
             'nama_ruangan'   => $first->nama_ruangan,
             'tanggal'        => \Carbon\Carbon::parse($first->tanggal)->locale('id')->translatedFormat('d F Y, H:i'),
+            'waktu_masuk'    => $first->waktu_masuk ? \Carbon\Carbon::parse($first->waktu_masuk)->locale('id')->translatedFormat('d F Y, H:i') : '-',
+            'waktu_selesai'  => $first->waktu_selesai ? \Carbon\Carbon::parse($first->waktu_selesai)->locale('id')->translatedFormat('d F Y, H:i') : '-',
             'nama_teknisi'   => $teknisi ?: '-',
             'deskripsi'      => $deskripsi ?: '-',
             'kategoris'      => $kategorisFormatted
@@ -328,7 +412,7 @@ class MaintenanceCtrl extends Controller
         }
 
         $maintenance = DB::table('maintenance')
-            ->where('id_pengaduan_masuk', $id)
+            ->where('id_pengaduan_masuk', $pengaduan->id_pengaduan_masuk)
             ->first();
 
         if (!$maintenance) {
@@ -363,9 +447,7 @@ class MaintenanceCtrl extends Controller
             'updated_at' => now()->toDateTimeString()
         ]);
 
-        DB::table('notifikasi')
-            ->where('id_pengaduan', $pengaduan->id_pengaduan)
-            ->delete();
+        // Notifikasi tidak dihapus agar muncul di riwayat (tab Sudah Ditindak)
 
         $this->kirimBalikKeSipitrs(
             $pengaduan,
@@ -373,7 +455,7 @@ class MaintenanceCtrl extends Controller
             null
         );
 
-        return redirect('/maintenance/maintenance?buka_detail=' . $maintenanceId);
+        return redirect('/maintenance/maintenance?status=diterima&buka_detail=' . $maintenanceId);
     }
 
     public function get_latest_maintenance()
@@ -397,8 +479,9 @@ class MaintenanceCtrl extends Controller
 
         $request->validate([
             'status' => 'required|string|in:Pending,Dipending,Diproses,Selesai',
-            'deskripsi_tindakan' => 'required_if:status,Selesai|nullable|string|max:500',
-            'id_kategori' => 'required|integer'
+            'deskripsi_tindakan' => 'nullable|string|max:500',
+            'id_kategori' => 'required|integer',
+            'jadwal_proses' => 'nullable|date'
         ]);
 
         try {
@@ -427,17 +510,21 @@ class MaintenanceCtrl extends Controller
                 ], 400);
             }
 
-            $deskripsi = $request->status === 'Pending' ? null : $request->deskripsi_tindakan;
+            $deskripsi = ($request->status === 'Pending' || $request->status === 'Diproses') ? null : $request->deskripsi_tindakan;
+
+            $pengaduanUpdate = [
+                'status'     => $request->status,
+                'updated_at' => now()->toDateTimeString()
+            ];
+
+            if ($request->status === 'Pending' && $request->jadwal_proses) {
+                $pengaduanUpdate['jadwal_proses'] = $request->jadwal_proses;
+            }
 
             DB::table('pengaduan_masuk')
                 ->where('id_pengaduan_masuk', $id)
                 ->where('id_kategori', $request->id_kategori)
-                ->update([
-                    'status'     => $request->status,
-                    'tanggal' => now()->toDateTimeString(),
-                    'created_at' => now()->toDateTimeString(),
-                    'updated_at' => now()->toDateTimeString()
-                ]);
+                ->update($pengaduanUpdate);
 
             DB::table('maintenance')
                 ->where('id_pengaduan_masuk', $id)

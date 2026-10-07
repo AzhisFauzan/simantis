@@ -234,7 +234,7 @@
         <li class="nav-item {{ request()->is('ruangan/data_ruangan*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('/ruangan/data_ruangan') }}">
                 <i class="fas fa-fw fa-door-open"></i>
-                <span>Data Ruangan</span>
+                <span>Manajemen Ruangan</span>
             </a>
         </li>
 

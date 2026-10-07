@@ -81,4 +81,16 @@ class UserCtrl extends Controller
             'role'   => $user->role,
         ]);
     }
+    public function toggle_status($id)
+    {
+        $user = User::findOrFail($id);
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        return response()->json([
+            'status'    => 'success',
+            'is_active' => $user->is_active,
+            'name'      => $user->name,
+        ]);
+    }
 }

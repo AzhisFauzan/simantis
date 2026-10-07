@@ -253,9 +253,9 @@
                         <th>Ruangan</th>
                         <th>Perangkat</th>
                         <th>Sumber</th> 
-                        <th>Tanggal Selesai</th>
+                        <th>Waktu Masuk</th>
+                        <th>Waktu Selesai</th>
                         <th>Teknisi</th>
-                        <th>Deskripsi Pekerjaan</th>
                         <th class="text-center" style="width:100px">Aksi</th>
                     </tr>
                 </thead>
@@ -270,11 +270,9 @@
                         <td>
                             {!! $item->sumber_html !!} 
                         </td>
-                        <td style="font-weight: 500;">{{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y, H:i') }}</td>
+                        <td style="font-weight: 500;">{{ $item->waktu_masuk ? \Carbon\Carbon::parse($item->waktu_masuk)->format('d M Y, H:i') : '-' }}</td>
+                        <td style="font-weight: 500;">{{ \Carbon\Carbon::parse($item->waktu_selesai)->format('d M Y, H:i') }}</td>
                         <td style="font-weight: 600;">{{ $item->nama_teknisi ?? '-' }}</td>
-                        <td style="color: var(--text-sub); font-size: 12px;">
-                            {!! Str::limit(strip_tags($item->deskripsi), 50) !!}
-                        </td>
                         <td class="text-center">
                             <button class="btn-icon btn-detail-riwayat"
                                 data-id="{{ $item->id_maintenance }}"
@@ -309,49 +307,54 @@
 </div>
 
 <div class="modal fade" id="modalDetailRiwayat" tabindex="-1">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="mhead">
-                <h5 class="modal-title">Informasi Maintenance</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+        <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            <div class="mhead purple" style="padding: 18px 24px; border-radius: 16px 16px 0 0; background: var(--rs-purple);">
+                <h5 class="modal-title" style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;">Informasi Maintenance</h5>
+                <button type="button" class="close" data-dismiss="modal" style="outline: none; color: #fff; text-shadow: none; opacity: 0.8;"><span>&times;</span></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 24px;">
                 <div id="riwayat-loading" class="text-center py-4">
-                    <div class="spinner-border" style="color:var(--rs-purple); width:28px;height:28px;border-width:2px;" role="status"></div>
-                    <p class="mt-2 text-muted" style="font-size:13px;font-weight:600;">Memuat data...</p>
+                    <div class="spinner-border" style="color:var(--rs-purple); width:24px;height:24px;" role="status"></div>
                 </div>
-
                 <div id="riwayat-content" style="display:none;">
-                    <div class="detail-list">
-                        <div class="detail-item">
-                            <div class="detail-label">Ruangan</div>
-                            <div class="detail-value" id="r-ruangan">-</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Ruangan</div>
+                            <div id="r-ruangan" style="font-size: 14px; font-weight: 700; color: #0f172a;">-</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Waktu Selesai</div>
-                            <div class="detail-value" id="r-tanggal">-</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Dikerjakan Oleh</div>
-                            <div class="detail-value" id="r-teknisi">-</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Kategori Perangkat</div>
-                            <div class="detail-value" id="r-kategori" style="margin-top:6px;">-</div>
-                        </div>
-                        <div class="detail-item" style="background:transparent; border:none; padding:0;">
-                            <div class="detail-label">Deskripsi Laporan</div>
-                            <div class="detail-value-desc" id="r-deskripsi">-</div>
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Dikerjakan Oleh</div>
+                            <div id="r-teknisi" style="font-size: 13px; font-weight: 600; color: #334155;">-</div>
                         </div>
                     </div>
-                </div>
 
-                <div id="riwayat-error" class="alert alert-danger d-none" style="font-size:13px; font-weight:600; border-radius:8px;">
-                    Gagal memuat data. Silakan coba lagi.
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px dashed #cbd5e1;">
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Waktu Masuk</div>
+                            <div id="r-waktu-masuk" style="font-size: 13px; font-weight: 600; color: #334155;">-</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Waktu Selesai</div>
+                            <div id="r-tanggal" style="font-size: 13px; font-weight: 600; color: #334155;">-</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">Kategori Perangkat</div>
+                        <div id="r-kategori" style="font-size: 13px; font-weight: 600; color: #334155;">-</div>
+                    </div>
+
+                    <div>
+                        <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Deskripsi Laporan</div>
+                        <div id="r-deskripsi" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; font-size: 13px; font-weight: 500; color: #334155; line-height: 1.5; min-height: 60px;">-</div>
+                    </div>
+
                 </div>
             </div>
-            <div class="modal-footer d-flex justify-content-end">
-                <button type="button" class="btn-tutup-detail" data-dismiss="modal">Tutup</button>
+            <div class="modal-footer" style="padding: 0 24px 24px; border-top: none; display: flex; justify-content: flex-end; background: #fff;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px; padding: 8px 20px; font-size: 13px; font-weight: 600; background: #f1f5f9; color: #475569; border: none; outline: none; cursor: pointer; transition: 0.2s;">Tutup</button>
             </div>
         </div>
     </div>
@@ -384,7 +387,8 @@ $(document).on('click', '.btn-detail-riwayat', function(){
         method: 'GET',
         success: function(data){
             $('#r-ruangan').text(data.nama_ruangan ?? '-');
-            $('#r-tanggal').text(data.tanggal      ?? '-');
+            $('#r-waktu-masuk').text(data.waktu_masuk ?? '-');
+            $('#r-tanggal').text(data.waktu_selesai ?? '-');
             $('#r-teknisi').text(data.nama_teknisi  ?? '-');
             
             $('#r-deskripsi').html(data.deskripsi   ?? 'Tidak ada catatan.');

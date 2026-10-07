@@ -224,26 +224,24 @@
 
     <table class="tabel-ttd">
         <tr>
-            <td>
-                DIREKTUR<br>
-                RSU DARMAYU MADIUN
-                <div class="spasi-ttd"></div>
-                (.................................................)
+            <td style="width: 35%; text-align: center; padding-left: 40px;">
+                <br>
+                TEKNISI
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <img src="data:image/svg+xml;base64,{{ $qrCodes['teknisi'] }}" style="width: 70px; height: 70px;">
+                </div>
+                ALLYSA JUNE A., S. Kom.
             </td>
-            <td>
-                KEPALA BAGIAN<br>
-                ADMINISTRASI DAN UMUM
-                <div class="spasi-ttd"></div>
-                (.................................................)
-            </td>
-            <td>
+            <td style="width: 30%;"></td>
+            <td style="width: 35%; text-align: center; padding-right: 40px;">
                 KEPALA UNIT<br>
-                IT/PROGRAMMER
-                <div class="spasi-ttd"></div>
-                (.................................................)
+                IT / PROGRAMMER
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <img src="data:image/svg+xml;base64,{{ $qrCodes['kepala'] }}" style="width: 70px; height: 70px;">
+                </div>
+                INDRA LAKSANA PUTRA, S.Kom.
             </td>
         </tr>
     </table>
-
 </body>
 </html>
